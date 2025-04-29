@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===================== */
+/* Base link reset       */
+/* ===================== */
+@layer base {
+    a {
+        @apply no-underline text-inherit; /* Sin subrayado ni color azul */
+    }
+}
+
+/* ===================== */
+/* Smooth scrolling      */
+/* ===================== */
+html {
+    scroll-behavior: smooth; /* Desplazamiento suave al hacer scroll */
+    overflow-x: hidden; /* Eliminar scroll horizontal */
+    height: 100%; /* Asegurar que el contenido se ajuste */
+    overflow-y: auto; /* Habilitar desplazamiento vertical */
+}
+
+/* ===================== */
+/* Ocultar scrollbar     */
+/* ===================== */
+html, body {
+    overflow-x: hidden; /* Asegura que no haya desplazamiento horizontal */
+    height: 100%;
+    display: block; /* Evita posibles problemas con elementos flotantes */
+}
+
+/* Para ocultar barras de desplazamiento en cualquier elemento */
+* {
+    -ms-overflow-style: none;  /* Para IE y Edge */
+    scrollbar-width: none;     /* Para Firefox */
+}
+
+*::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento en navegadores basados en WebKit */
+}
+
+/* ===================== */
+/* Utility animations    */
+/* ===================== */
+@layer utilities {
+    /* Ocultar scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Animación para el logo en la barra de navegación */
+    .transition-opacity {
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+}
+
+/* ===================== */
+/* Media query for reduced motion */
+/* ===================== */
+@media (prefers-reduced-motion: reduce) {
+    /* Desactiva todas las animaciones */
+    .animate-spin-slow,
+    .animate-pulse-soft {
+        animation: none !important;
+    }
+}
