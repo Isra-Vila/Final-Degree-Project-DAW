@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RoleSeeder; // Importa el RoleSeeder
+use Database\Seeders\UserSeeder; // Importa el UserSeeder
+use Database\Seeders\BikeSeeder; // Importa el BikeSeeder
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Llama al RoleSeeder primero
+        $this->call(RoleSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Luego llama al UserSeeder
+        $this->call(UserSeeder::class);
+
+        // Finalmente, llama al BikeSeeder
+        $this->call(BikeSeeder::class);
+
+        // Puedes añadir aquí otras llamadas a seeders si tienes más
     }
 }

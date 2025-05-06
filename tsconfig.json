@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "esnext"], // ⭐ ¡Añade "es2017" aquí!
+    // También podrías usar una versión más reciente para tener acceso a más características:
+    // "lib": ["dom", "es2015", "es2020"],
+    // o incluso la última:
+    // "lib": ["dom", "esnext"],
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true
+  },
+  "include": [
+    "resources/js/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -8,4 +8,5 @@ Route::prefix('api')->group(function () {
 // Para el frontend SPA (React)
 Route::get('/{any}', function () {
     return view('layouts.main');
-})->where('any', '.*');
+})->where('any', '^(?!api).*$');
+

@@ -27,7 +27,14 @@ html {
 html, body {
     overflow-x: hidden; /* Asegura que no haya desplazamiento horizontal */
     height: 100%;
-    display: block; /* Evita posibles problemas con elementos flotantes */
+
+}
+
+/* ===================== */
+/* Espacio para el encabezado fijo/absoluto */
+/* ===================== */
+body {
+    padding-top: 4rem;   /* **Importante:** Ajusta este valor seg\u00fan la altura real de tu encabezado */
 }
 
 /* Para ocultar barras de desplazamiento en cualquier elemento */
