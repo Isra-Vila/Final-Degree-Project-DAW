@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\Middleware\RoleMiddleware; // ⭐ ¡Añade esta línea!
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +12,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // ⭐ ¡Añade este binding para el middleware 'role'!
+        $this->app->bind('role', function ($app) {
+            return new RoleMiddleware();
+        });
     }
 
     /**

@@ -8,14 +8,11 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 5173,
         strictPort: true,
-        https: {
-            key: fs.readFileSync('ssl/key.pem'),    // Ruta a tu clave privada
-            cert: fs.readFileSync('ssl/cert.pem'),  // Ruta a tu certificado
-        },
-        origin: 'https://tripasion.com',  // Aquí definimos el origen correcto
+        
+        //origin: 'https://tripasion.com',  // Aquí definimos el origen correcto
         hmr: {
-            protocol: 'wss',  // WebSockets seguros, porque usas HTTPS
-            host: 'tripasion.com',  // Usamos el mismo dominio para HMR
+            protocol: 'ws',  // WebSockets seguros, porque usas HTTPS
+            host: 'localhost',  // Usamos el mismo dominio para HMR
             port: 5173,  // El puerto para HMR
         },
         proxy: {
@@ -31,6 +28,9 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,
         }),
-        react(),
+        react({
+            // ⭐ ¡Añade esta línea para deshabilitar Fast Refresh!
+            fastRefresh: false,
+        }),
     ],
 });
