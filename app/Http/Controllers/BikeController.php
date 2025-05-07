@@ -36,9 +36,13 @@ class BikeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBikeRequest $request)
+    public function store(StoreBikeRequest $request): JsonResponse
     {
-        $bike = Bike::create($request->validated());
+        $validatedData = $request->validated();
+        $ownerId = Auth::id(); // Obtener el ID del usuario autenticado
+
+        $validatedData['owner_id'] = $ownerId; // Agregar owner_id al array de datos
+        $bike = Bike::create($validatedData);
         return response()->json($bike->load(['owner', 'mechanic']), 201);
     }
 

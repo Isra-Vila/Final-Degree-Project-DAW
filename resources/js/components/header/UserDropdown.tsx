@@ -36,10 +36,10 @@ export default function UserDropdown({
             <Link to="/client/profile" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Perfil
             </Link>
-            <Link to="/client/dates" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
+            <Link to="/workshop/client/dates" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Mis Citas
             </Link>
-            <Link to="/client/bike" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
+            <Link to="/workshop/client/bike" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Mi Bicicleta
             </Link>
             <button onClick={() => { handleLogout(); handleLinkClick(); }} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
@@ -52,17 +52,8 @@ export default function UserDropdown({
             <Link to="/mechanic/profile" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Ficha de Empleado
             </Link>
-            <Link to="/mechanic/dates" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
+            <Link to="/workshop/mechanic/dates" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Citas
-            </Link>
-            <Link to="/mechanic/workshop" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
-              Taller
-            </Link>
-            <Link to="/mechanic/documents" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
-              Documentos
-            </Link>
-            <Link to="/mechanic/schedule" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
-              Horario
             </Link>
             <button onClick={() => { handleLogout(); handleLinkClick(); }} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
               Cerrar Sesión
@@ -93,7 +84,7 @@ export default function UserDropdown({
               Cerrar Sesión
             </button>
           </>
-        ) : null // ⭐ No renderizar nada si el rol no es ninguno de los especificados y está loggeado
+        ) : null // No renderizar nada si el rol no es ninguno de los especificados y está loggeado
       ) : (
         // Opciones cuando no está loggeado
         <>

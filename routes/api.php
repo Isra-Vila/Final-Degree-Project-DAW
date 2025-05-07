@@ -46,7 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Rutas para MECÁNICOS (con middleware de rol)
     Route::middleware('role:mechanic')->group(function () {
         Route::get('/mechanic/dashboard', [MechanicController::class, 'dashboard']);
-        // ⭐ Rutas para mecánicos relacionadas con bicicletas y citas (las definirás más adelante)
+
+        // ⭐ Rutas para obtener las bicicletas y citas asignadas al mecánico
+        Route::get('/mechanic/assigned-bikes', [MechanicController::class, 'getAssignedBikes']); // Agrega esta línea
+        Route::get('/mechanic/assigned-appointments', [MechanicController::class, 'getAssignedAppointments']); // Agrega esta línea
     });
 
     // ⭐ Ruta para obtener mecánicos (ahora dentro del grupo protegido)

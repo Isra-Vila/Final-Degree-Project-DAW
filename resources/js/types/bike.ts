@@ -1,6 +1,16 @@
 // js/types/bike.ts
 import { User } from './user'; // Si quieres referenciar la interfaz User aquí
 
+interface Appointment {
+  id: number;
+  type: 'reparacion' | 'mantenimiento';
+  start_time: string;
+  end_time: string;
+  mechanic?: User | null;
+  status: 'pendiente' | 'en progreso' | 'completada' | 'cancelada';
+  // Añade aquí cualquier otra propiedad que tengan tus citas
+}
+
 export interface Bike {
   id: number;
   brand: string;
@@ -25,4 +35,5 @@ export interface Bike {
   maintenance_state?: string | null;
   created_at?: string;
   updated_at?: string;
+  appointments?: Appointment[]; // Añade la propiedad appointments aquí
 }

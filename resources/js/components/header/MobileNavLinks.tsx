@@ -51,7 +51,7 @@ const MobileNavLinks: React.FC<MobileNavLinksProps> = ({ isLoggedIn, userRole, h
               <NavLink to="/workshop/client/dates" onClick={closeMenu} className={linkClasses}>
                 Mis Citas
               </NavLink>
-              <NavLink to="/client/bike" onClick={closeMenu} className={linkClasses}>
+              <NavLink to="/workshop/client/bike" onClick={closeMenu} className={linkClasses}>
                 Mi Bicicleta
               </NavLink>
             </>
@@ -59,9 +59,9 @@ const MobileNavLinks: React.FC<MobileNavLinksProps> = ({ isLoggedIn, userRole, h
           {userRole === 'mechanic' && (
             <>
               <NavLink to="/mechanic/profile" onClick={closeMenu} className={linkClasses}>
-                Perfil
+                Ficha de Empleado
               </NavLink>
-              <NavLink to="/mechanic/dates" onClick={closeMenu} className={linkClasses}>
+              <NavLink to="/workshop/mechanic/dates" onClick={closeMenu} className={linkClasses}>
                 Mis Citas
               </NavLink>
             </>
