@@ -15,8 +15,8 @@ export default function Header({ userRole, isLoggedIn, setIsLoggedIn }: HeaderPr
     const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [hasCartItems, setHasCartItems] = useState(false);
-    const [showCartDropdown, setShowCartDropdown] = useState(false); // ¡Correcci\u00f3n aqu\u00ed!
-    const [showUserDropdown, setShowUserDropdown] = useState(false); // ¡Correcci\u00f3n aqu\u00ed!
+    const [showCartDropdown, setShowCartDropdown] = useState(false);
+    const [showUserDropdown, setShowUserDropdown] = useState(false);
 
     const cartDropdownRef = useRef<HTMLDivElement | null>(null);
     const userDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -124,10 +124,10 @@ export default function Header({ userRole, isLoggedIn, setIsLoggedIn }: HeaderPr
                     className={`absolute left-6 top-1/2 -translate-y-1/2 transition-opacity duration-500 ${isHomePage ? (scrolled ? 'opacity-100' : 'opacity-0') : 'opacity-100'}`}
                     style={{ transition: 'opacity 0.5s ease' }}
                 >
-                    <img src="/images/Tripasion_Logo.png" alt="Tripasión" className="w-[2.5rem] md:w-[3.5rem]" />
+                    <img src="/images/Tripasion_Logo.gif" alt="Tripasión" className="w-[2.5rem] md:w-[3.5rem]" />
                 </div>
 
-                {/* Enlaces de navegaci\u00f3n en escritorio con Framer Motion */}
+                {/* Enlaces de navegación en escritorio con Framer Motion */}
                 <motion.div
                     className={`hidden md:flex gap-8 font-semibold text-lg`}
                     initial="center"
@@ -179,7 +179,7 @@ export default function Header({ userRole, isLoggedIn, setIsLoggedIn }: HeaderPr
                                 />
                             </svg>
                             {hasCartItems && (
-                                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-2 ring-white"></span>
+                                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
                             )}
                         </button>
                         <CartDropdown
@@ -190,7 +190,7 @@ export default function Header({ userRole, isLoggedIn, setIsLoggedIn }: HeaderPr
                     </div>
 
                     <div className="relative" ref={userDropdownRef}>
-                        <button onClick={toggleUserDropdown} className="focus:outline-none" aria-label="Men\u00fa de usuario">
+                        <button onClick={toggleUserDropdown} className="focus:outline-none" aria-label="Menú de usuario">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6"
@@ -223,7 +223,7 @@ export default function Header({ userRole, isLoggedIn, setIsLoggedIn }: HeaderPr
                 </div>
             </motion.nav>
 
-            {/* Men\u00fa m\u00f3vil usando el nuevo componente */}
+            {/* Menú móvil usando el nuevo componente */}
             {open && (
                 <MobileNavLinks
                     isLoggedIn={isLoggedIn}

@@ -25,8 +25,8 @@ class StoreBikeRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'brand' => 'nullable|string|max:255',
-            'model' => 'nullable|string|max:255',
+            'brand' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
             'handlebar' => 'nullable|string|max:255',
             'stem' => 'nullable|string|max:255',
             'saddle' => 'nullable|string|max:255',
@@ -75,14 +75,27 @@ class StoreBikeRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
      */
-    protected function prepareForValidation(): void
+    public function messages(): array
     {
-        if (Auth::check() && Auth::user()->hasRole('client')) {
-            $this->merge([
-                'owner_id' => Auth::id(),
-            ]);
-        }
+        return [
+            'brand.required' => 'La marca de la bicicleta es obligatoria.',
+            'brand.string' => 'La marca debe ser una cadena de texto.',
+            'brand.max' => 'La marca no puede tener más de 255 caracteres.',
+            'model.required' => 'El modelo de la bicicleta es obligatorio.',
+            'model.string' => 'El modelo debe ser una cadena de texto.',
+            'model.max' => 'El modelo no puede tener más de 255 caracteres.',
+            'year.integer' => 'El año debe ser un número entero.',
+            'year.min' => 'El año debe ser al menos 1900.',
+            'year.max' => 'El año no puede ser mayor a ' . (date('Y') + 1) . '.',
+            'mechanic_id.exists' => 'El ID del mecánico seleccionado no es válido.',
+            'repair_state.in' => 'El estado de reparación seleccionado no es válido.',
+            'maintenance_state.in' => 'El estado de mantenimiento seleccionado no es válido.',
+            'owner_id.required' => 'El ID del propietario es obligatorio.',
+            'owner_id.exists' => 'El ID del propietario seleccionado no es válido.',
+        ];
     }
 }
