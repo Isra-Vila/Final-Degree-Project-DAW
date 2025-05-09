@@ -1,6 +1,6 @@
 // resources/js/types/bike.ts
 import { User } from './user';
-import { Appointment } from './appointment'; // ⭐ Importa la interfaz Appointment unificada
+import { Appointment } from './appointment'; 
 
 export interface Bike {
   id: number;
@@ -30,5 +30,5 @@ export interface Bike {
   maintenance_state?: string | null;
   created_at?: string;
   updated_at?: string;
-  appointments?: Appointment[]; // ⭐ Usa la interfaz Appointment unificada
+  appointments?: Appointment[]; 
 }

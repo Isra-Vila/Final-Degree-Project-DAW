@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
       <section className="min-h-screen flex items-center justify-center w-full">
         <WelcomeSection />
       </section>
-      <section className="min-h-screen flex items-center justify-center bg-pink-100 w-full">
+      <section className="flex items-center justify-center bg-pink-100 w-full py-12">
         <TestimonialsSection />
       </section>
       <section className="min-h-screen flex flex-col items-center justify-center w-full">

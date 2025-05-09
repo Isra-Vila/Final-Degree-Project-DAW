@@ -4,17 +4,22 @@ import { motion } from 'framer-motion';
 const TestimonialsSection: React.FC = () => {
   return (
     <motion.div
-      className="flex flex-col items-center text-center max-w-2xl mx-auto px-4 py-12"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      viewport={{ once: true }}
+      // Restaurar el ancho que te gustaba y reducir drásticamente el padding vertical (py)
+      className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto px-4 py-6" // ⭐ Ajustado py-6 (antes era py-10/12)
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.3 }}
+      viewport={{ once: true, amount: 0.5 }}
     >
-      <h2 className="text-3xl font-semibold mb-4 text-[#F62364]">¿Qué dicen nuestros clientes?</h2>
-      <blockquote className="italic text-lg">
+      <h2 className="text-3xl font-extrabold mb-4 text-[#F62364] leading-tight"> {/* ⭐ Reducido mb-6 a mb-4 */}
+        La voz de nuestros ciclistas
+      </h2>
+      <blockquote className="text-xl sm:text-2xl font-medium text-gray-800 leading-relaxed italic mb-4">
         “Tuve una experiencia increíble alquilando una bicicleta con Tripasión. El servicio fue excelente y las bicicletas estaban en perfectas condiciones. ¡Sin duda, repetiré!”
       </blockquote>
-      <p className="mt-4 font-semibold">- Carlos Martínez</p>
+      <p className="mt-2 font-semibold text-gray-700 text-base">
+        - Carlos Martínez, Ciclista Urbano
+      </p>
     </motion.div>
   );
 };
