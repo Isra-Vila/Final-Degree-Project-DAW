@@ -71,15 +71,6 @@ export default function UserDropdown({
             <Link to="/admin/bikes" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Gestión de Bicicletas
             </Link>
-            <Link to="/admin/stock" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
-              Gestión de Stock
-            </Link>
-            <Link to="/admin/schedule" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
-              Gestión de Horarios
-            </Link>
-            <Link to="/admin/documents" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
-              Gestión de Documentos
-            </Link>
             <button onClick={() => { handleLogout(); handleLinkClick(); }} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
               Cerrar Sesión
             </button>

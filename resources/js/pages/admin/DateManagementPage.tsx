@@ -1,11 +1,9 @@
 import React from 'react';
+import ComingSoon from '../../components/common/ComingSoon';
 
-const DateManagementPage = () => {
+const DateManagementPage: React.FC = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Gestión de Citas</h1>
-      <p>Contenido de la página de gestión de citas...</p>
-    </div>
+    <ComingSoon /> // Simplemente renderiza el componente ComingSoon
   );
 };
 

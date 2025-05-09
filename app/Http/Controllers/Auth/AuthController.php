@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException; // Importa esta clase para las validaciones
 
 class AuthController extends Controller
 {
@@ -27,10 +28,9 @@ class AuthController extends Controller
         // Al registrarse siempre cliente
         $user->assignRole('client');
 
-        // ⭐ ¡Refrescar el modelo de usuario para asegurar que los roles estén cargados!
-        $user = $user->refresh();
-
         // ⭐ Cargar la relación 'roles' antes de devolver la respuesta
+        // No es necesario un $user->refresh() si $user->assignRole ya persiste y el modelo se actualiza.
+        // Sin embargo, $user->load('roles') es crucial para que los roles estén en la respuesta JSON.
         $user->load('roles');
 
         // Generar token
@@ -39,7 +39,7 @@ class AuthController extends Controller
         return response()->json([
             'token'      => $token,
             'token_type' => 'Bearer',
-            'user'       => $user,
+            'user'       => $user, // Asegúrate de que el objeto user se devuelve aquí con los roles cargados
         ], 201);
     }
 
@@ -51,9 +51,14 @@ class AuthController extends Controller
         ]);
 
         if (! Auth::attempt($request->only('email','password'))) {
-            return response()->json(['message' => 'Credenciales incorrectas'], 401);
+            // Utiliza ValidationException para manejar errores de credenciales de forma consistente
+            throw ValidationException::withMessages([
+                'email' => ['Las credenciales proporcionadas son incorrectas.'],
+            ]);
         }
 
+        // Obtener el usuario autenticado y cargar la relación 'roles'
+        // Auth::user() ya te da la instancia del usuario autenticado, luego puedes cargar la relación.
         $user = Auth::user()->load('roles');
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -61,7 +66,7 @@ class AuthController extends Controller
         return response()->json([
             'token'      => $token,
             'token_type' => 'Bearer',
-            'user'       => $user,
+            'user'       => $user, // Asegúrate de que el objeto user se devuelve aquí con los roles cargados
         ]);
     }
 
