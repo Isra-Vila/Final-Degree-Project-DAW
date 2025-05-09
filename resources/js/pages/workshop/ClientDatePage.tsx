@@ -8,17 +8,28 @@ import AppointmentForm from '../../components/forms/AppointmentForm';
 const BikeForm = lazy(() => import('../../components/forms/BikeForm'));
 import BikeList from '../../components/bike/BikeList';
 import SelectedBikeDetails from '../../components/bike/SelectedBikeDetails';
-import MechanicsChat from '../../components/MechanicsChat';
+// import MechanicsChat from '../../components/MechanicsChat'; // Ya no se importa si lo vamos a simular aquí
 import { Bike } from '../../types/bike';
-import { User } from '../../types/user';
+// import { User } from '../../types/user'; // Ya no se usa, se puede quitar
 
 const localizer = momentLocalizer(moment);
+
+// Definir una interfaz para el objeto de la cita que se espera de la API
+interface AppointmentType {
+  id: number;
+  title: string;
+  start_time: string;
+  end_time: string;
+  status: 'pendiente' | 'confirmada' | 'completada' | 'fallida' | 'cancelada'; // Añadir los estados que tu API devuelva
+  bike_id: number; // Crucial para relacionar con la bici
+  // Otros campos que tu API pueda devolver (ej. description, mechanic_id, client_id, etc.)
+}
 
 interface EventType {
   title: string;
   start: Date;
   end: Date;
-  resource?: any;
+  resource?: AppointmentType; // resource ahora es de tipo AppointmentType
 }
 
 const ClientDatePage: React.FC = () => {
@@ -34,6 +45,9 @@ const ClientDatePage: React.FC = () => {
   const [newBikeData, setNewBikeData] = useState<Partial<Bike>>({});
   const [bikeFormError, setBikeFormError] = useState<string | null>(null);
   const [bikeToEdit, setBikeToEdit] = useState<Bike | null>(null);
+  // Estado para la fecha del calendario (para controlar la vista)
+  const [calendarDate, setCalendarDate] = useState<Date>(new Date());
+
 
   const navigate = useNavigate();
 
@@ -45,12 +59,13 @@ const ClientDatePage: React.FC = () => {
       setErrorBikes(null);
 
       setLoadingAppointments(true);
-      const appointmentsResponse = await api.get<any[]>('/client/appointments');
-      const formattedEvents: EventType[] = appointmentsResponse.data.map((appt: any) => ({
+      // Asegúrate de que la respuesta de la API de citas incluya el campo 'status'
+      const appointmentsResponse = await api.get<AppointmentType[]>('/client/appointments');
+      const formattedEvents: EventType[] = appointmentsResponse.data.map((appt: AppointmentType) => ({
         title: appt.title,
         start: new Date(appt.start_time),
         end: new Date(appt.end_time),
-        resource: appt,
+        resource: appt, // Guardamos el objeto completo de la cita en resource, incluyendo su estado
       }));
       setMyEventsList(formattedEvents);
       setErrorAppointments(null);
@@ -68,17 +83,25 @@ const ClientDatePage: React.FC = () => {
     fetchData();
   }, [fetchData]);
 
-  const handleSelectBike = (bike: Bike) => setSelectedBike(bike);
+  const handleSelectBike = (bike: Bike) => {
+    setSelectedBike(bike);
+    // Cuando se selecciona una bici de la lista, limpiamos la selección de evento del calendario
+    // Esto es para evitar conflictos visuales o de datos
+    setShowAppointmentForm(false); // Oculta el formulario de cita si está abierto
+    setShowBikeForm(false);      // Oculta el formulario de bici si está abierto
+  };
+
   const handleAddBikeClick = () => {
     setBikeToEdit(null); // Reset edit mode
     setNewBikeData({});
     setShowBikeForm(true);
     setShowAppointmentForm(false);
+    setSelectedBike(null); // Deseleccionar cualquier bici cuando se va a añadir una nueva
   };
   const handleAddAppointmentClick = () => {
     setShowAppointmentForm(true);
     setShowBikeForm(false);
-    setSelectedBike(null);
+    setSelectedBike(null); // Deseleccionar cualquier bici cuando se va a añadir una cita
   };
   const handleAppointmentFormSuccess = () => {
     setShowAppointmentForm(false);
@@ -107,7 +130,7 @@ const ClientDatePage: React.FC = () => {
       return;
     }
     try {
-      const bikeDataToSend = { ...newBikeData, owner_id: 1 };
+      const bikeDataToSend = { ...newBikeData, owner_id: 1 }; // Asegúrate de que owner_id sea el ID del cliente logueado
       const isEditing = bikeToEdit?.id;
       const apiUrl = isEditing ? `/client/bikes/${bikeToEdit.id}` : '/client/bikes';
       const method = isEditing ? api.put : api.post;
@@ -118,7 +141,7 @@ const ClientDatePage: React.FC = () => {
       setNewBikeData({});
       setBikeToEdit(null);
       setBikeFormError(null);
-      fetchData();
+      fetchData(); // Vuelve a cargar los datos para actualizar la lista de bicis
     } catch (error: any) {
       console.error(`Error ${bikeToEdit ? 'editando' : 'creando'} bicicleta:`, error);
       setBikeFormError(error.response?.data?.message || `¡No se pudo ${bikeToEdit ? 'editar' : 'crear'} la bicicleta!`);
@@ -144,6 +167,31 @@ const ClientDatePage: React.FC = () => {
     setNewBikeData(bike);
     setShowBikeForm(true);
     setShowAppointmentForm(false);
+    setSelectedBike(null); // Deseleccionar la bici actual si se va a editar
+  };
+
+  // Función para manejar la selección de eventos del calendario
+  const handleSelectCalendarEvent = (event: EventType) => {
+    // Asumo que event.resource contiene el objeto de la cita completo,
+    // y que tiene una propiedad 'bike_id' que corresponde a un ID de bicicleta.
+    const associatedBikeId = event.resource?.bike_id;
+
+    if (associatedBikeId) {
+      // Busca la bicicleta en tu estado 'bikes'
+      const bike = bikes.find(b => b.id === associatedBikeId);
+      if (bike) {
+        setSelectedBike(bike); // Establece la bicicleta encontrada como la seleccionada
+        // Además, asegúrate de que no se muestren otros formularios
+        setShowAppointmentForm(false);
+        setShowBikeForm(false);
+      } else {
+        console.warn(`Bicicleta con ID ${associatedBikeId} no encontrada en la lista de bicis del cliente.`);
+        setSelectedBike(null); // Si no se encuentra la bici, deseleccionar
+      }
+    } else {
+      setSelectedBike(null); // Si el evento no tiene un bike_id, deseleccionar
+      console.log('Cita seleccionada sin ID de bicicleta asociado:', event.resource);
+    }
   };
 
   const renderCalendar = () => {
@@ -159,8 +207,26 @@ const ClientDatePage: React.FC = () => {
             startAccessor="start"
             endAccessor="end"
             style={{ height: '100%' }}
-            eventPropGetter={() => ({ className: 'rbc-event-custom' })}
-            onSelectEvent={(event) => console.log('Cita seleccionada:', event.resource)}
+            // MODIFICACIÓN AQUÍ: eventPropGetter para aplicar colores según el estado
+            eventPropGetter={(event) => {
+              let className = 'rbc-event-custom'; // Clase base definida en app.css
+              if (event.resource?.status === 'confirmada') {
+                className += ' rbc-event-confirmed'; // Clase para citas confirmadas (verde)
+              } else if (event.resource?.status === 'pendiente') {
+                className += ' rbc-event-pending'; // Clase para citas pendientes (azul)
+              } else if (event.resource?.status === 'completada') {
+                className += ' rbc-event-completed'; // Clase para citas completadas (gris)
+              } else if (event.resource?.status === 'fallida') {
+                className += ' rbc-event-failed'; // Clase para citas fallidas (rojo oscuro)
+              } else if (event.resource?.status === 'cancelada') { // Si manejas citas canceladas para mostrarlas
+                className += ' rbc-event-failed'; // Usar el mismo estilo que fallidas, o uno específico
+              }
+              return { className };
+            }}
+            onSelectEvent={handleSelectCalendarEvent} // Usamos la función para seleccionar cita
+            date={calendarDate} // Controla la vista del calendario con calendarDate
+            onNavigate={(newDate) => setCalendarDate(newDate)} // Actualiza la vista del calendario
+            views={['month']} // Aseguramos que solo se vea la vista de mes
           />
         </div>
         <div className="mt-6 flex justify-center gap-4">
@@ -202,7 +268,7 @@ const ClientDatePage: React.FC = () => {
                 formError={bikeFormError}
                 onCancel={handleCancelBikeForm}
                 onCreateBike={handleCreateBike}
-                hideClientMechanicIds={true}
+                hideClientMechanicIds={true} // El cliente no selecciona mecánico o cliente aquí
               />
             </Suspense>
           </div>
@@ -230,24 +296,21 @@ const ClientDatePage: React.FC = () => {
         )}
 
         {/* Detalles de la Bicicleta Seleccionada (derecha superior) y Chat (derecha inferior) */}
-        {!showAppointmentForm && !showBikeForm && selectedBike && (
+        {!showAppointmentForm && !showBikeForm && (
           <div className="w-1/4 pl-4 flex flex-col gap-6">
             <div className="bg-white rounded-xl shadow-md p-4 border-l-4 border-[#F62364]">
               <h3 className="text-sm font-semibold mb-2 text-gray-700"><svg className="w-4 h-4 mr-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0-6l-3 3m7 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Detalles de la Máquina</h3>
-              <SelectedBikeDetails bike={selectedBike} onDelete={handleDeleteBike} onEdit={handleEditBikeClick} />
+              <SelectedBikeDetails
+                bike={selectedBike} // Mostrar selectedBike (puede ser null)
+                onDelete={handleDeleteBike}
+                onEdit={handleEditBikeClick}
+              />
             </div>
-            <div className="bg-white rounded-xl shadow-md p-4 border-l-4 border-[#F62364]">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700"><svg className="w-4 h-4 mr-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10v-3m0 0l-3-3m3 3l3-3M3 7h18M9 10h5m-5 0v5m5 0v5"></path></svg> Charla con Boxes</h3>
-              <MechanicsChat />
-            </div>
-          </div>
-        )}
-        {!showAppointmentForm && !showBikeForm && !selectedBike && (
-          <div className="w-1/4 pl-4 flex flex-col gap-6">
-            <SelectedBikeDetails bike={null} onDelete={handleDeleteBike} onEdit={() => {}} />
-            <div className="bg-white rounded-xl shadow-md p-4 border-l-4 border-[#F62364]">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700"><svg className="w-4 h-4 mr-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10v-3m0 0l-3-3m3 3l3-3M3 7h18M9 10h5m-5 0v5m5 0v5"></path></svg> Charla con Boxes</h3>
-              <MechanicsChat />
+            <div className="bg-white rounded-xl shadow-md p-4 border-l-4 border-[#F62364] text-center"> {/* Added text-center class */}
+              <h3 className="text-sm font-semibold mb-4 text-gray-700"><svg className="w-4 h-4 mr-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10v-3m0 0l-3-3m3 3l3-3M3 7h18M9 10h5m-5 0v5m5 0v5"></path></svg> Charla con Boxes</h3>
+              <p className="text-lg text-gray-500 italic">
+                Esta funcionalidad está en desarrollo. <br /> ¡Pronto podrás chatear con nuestros mecánicos!
+              </p>
             </div>
           </div>
         )}

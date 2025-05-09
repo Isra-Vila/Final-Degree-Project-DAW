@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use App\Models\Bike;
+use Illuminate\Support\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -23,6 +24,8 @@ class AppointmentController extends Controller
         if ($user->hasRole('client')) {
             $appointments = $user->clientAppointments()->with(['bike', 'mechanic'])->get();
         } elseif ($user->hasRole('mechanic')) {
+            // Aunque este es el método index, si se llama desde una ruta genérica
+            // asegúrate de que las relaciones se carguen.
             $appointments = $user->mechanicAppointments()->with(['client', 'bike'])->get();
         } elseif ($user->hasRole('admin')) {
             $appointments = Appointment::with(['client', 'bike', 'mechanic'])->get();
@@ -90,7 +93,9 @@ class AppointmentController extends Controller
                 } elseif ($appointment->type === 'mantenimiento') {
                     $bike->update(['maintenance_state' => 'mantenimiento terminado', 'repair_state' => null]);
                 }
-            } elseif ($appointment->status === 'canceled' || $appointment->status === 'pending') {
+            }
+            // ⭐ Manejo del estado 'failed' y 'canceled' (o 'pending') para restablecer el estado de la bici a null/disponible
+            elseif ($appointment->status === 'canceled' || $appointment->status === 'failed' || $appointment->status === 'pending') {
                 $bike->update(['repair_state' => null, 'maintenance_state' => null]);
             }
         }
@@ -109,11 +114,54 @@ class AppointmentController extends Controller
             return response()->json(['message' => 'Acceso denegado'], 403);
         }
 
+        // Un mecánico no debería poder eliminar citas, solo un admin.
+        // Si el rol de mecánico necesita poder eliminar citas, esto debe ser considerado cuidadosamente.
         if (!$user->hasRole('admin') && $user->hasRole('mechanic')) {
             return response()->json(['message' => 'Acceso denegado'], 403);
         }
 
         $appointment->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Get the unavailable dates for a specific mechanic.
+     *
+     * @param  int  $mechanicId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUnavailableDatesForMechanic(int $mechanicId): JsonResponse
+    {
+        $unavailableDates = Appointment::where('mechanic_id', $mechanicId)
+            ->where('start_time', '>=', Carbon::now()->toDateString())
+            ->pluck('start_time')
+            ->map(function ($date) {
+                return Carbon::parse($date)->toDateString();
+            })
+            ->toArray();
+
+        return response()->json($unavailableDates);
+    }
+
+    /**
+     * Get appointments assigned to the authenticated mechanic.
+     * This method ensures client and bike relations are eager loaded.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function assignedAppointments(): JsonResponse
+    {
+        $mechanic = Auth::user();
+
+        if (!$mechanic || !$mechanic->hasRole('mechanic')) {
+            return response()->json(['message' => 'Acceso no autorizado. Solo para mecánicos.'], 403);
+        }
+
+        $appointments = Appointment::where('mechanic_id', $mechanic->id)
+                                   ->with(['client', 'bike', 'mechanic']) // Asegúrate de cargar el cliente, la bici y el propio mecánico
+                                   ->orderBy('start_time')
+                                   ->get();
+
+        return response()->json($appointments);
     }
 }

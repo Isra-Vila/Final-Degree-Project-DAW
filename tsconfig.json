@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
+    "module": "esnext",
     "lib": ["dom", "esnext"], // ⭐ ¡Añade "es2017" aquí!
     // También podrías usar una versión más reciente para tener acceso a más características:
     // "lib": ["dom", "es2015", "es2020"],

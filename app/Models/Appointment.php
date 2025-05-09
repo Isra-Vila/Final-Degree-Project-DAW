@@ -4,21 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Appointment extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'client_id',
         'mechanic_id',
         'bike_id',
-        'type', // ⭐ 'type' añadido a $fillable
+        'type',
         'title',
         'description',
         'start_time',
@@ -26,10 +22,15 @@ class Appointment extends Model
         'status',
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     /**
      * Get the client that owns the appointment.
      */
-    public function client()
+    public function client(): BelongsTo
     {
         return $this->belongsTo(User::class, 'client_id');
     }
@@ -37,15 +38,15 @@ class Appointment extends Model
     /**
      * Get the mechanic that is assigned to the appointment.
      */
-    public function mechanic()
+    public function mechanic(): BelongsTo
     {
         return $this->belongsTo(User::class, 'mechanic_id');
     }
 
     /**
-     * Get the bike associated with the appointment.
+     * Get the bike that the appointment is for.
      */
-    public function bike()
+    public function bike(): BelongsTo
     {
         return $this->belongsTo(Bike::class);
     }
