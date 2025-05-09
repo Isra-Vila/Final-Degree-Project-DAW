@@ -39,11 +39,12 @@ class StoreAppointmentRequest extends FormRequest
                 },
             ],
             'bike_id' => 'required|exists:bikes,id',
-            'type' => ['required', Rule::in(['reparacion', 'mantenimiento'])], // ⭐ 'type' ahora es obligatorio
+            'type' => ['required', Rule::in(['reparacion', 'mantenimiento'])],
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date|after:start_time',
+            // MODIFICACIÓN CLAVE AQUÍ: Define start_time y end_time como arrays desde el principio
+            'start_time' => ['required', 'date'],
+            'end_time' => ['required', 'date', 'after:start_time'],
             'status' => [
                 'nullable',
                 Rule::in(['pending', 'confirmed', 'completed', 'canceled']),
@@ -59,25 +60,44 @@ class StoreAppointmentRequest extends FormRequest
             $rules['client_id'] = 'required|exists:users,id';
         }
 
+        // Ya no necesitas la comprobación is_array porque ya son arrays.
+
         // Validación de disponibilidad del mecánico
         $rules['start_time'][] = function ($attribute, $value, $fail) {
             $mechanicId = $this->input('mechanic_id');
-            $startTime = new \DateTime($value);
-            $endTime = new \DateTime($this->input('end_time'));
+            $endTimeInput = $this->input('end_time');
 
-            if ($mechanicId && $startTime && $endTime) {
-                $overlappingAppointments = Appointment::where('mechanic_id', $mechanicId)
-                    ->where(function ($query) use ($startTime, $endTime) {
-                        $query->where(function ($query) use ($startTime, $endTime) {
-                            $query->where('start_time', '<', $endTime)
-                                  ->where('end_time', '>', $startTime);
-                        });
-                    })
-                    ->count();
+            if (!$mechanicId || !$value || !$endTimeInput) {
+                // Esto debería ser manejado por las reglas 'required' de arriba,
+                // pero se mantiene como una salvaguarda.
+                $fail("No se proporcionaron todos los datos necesarios para la verificación de disponibilidad.");
+                return;
+            }
 
-                if ($overlappingAppointments > 0) {
-                    $fail("El mecánico seleccionado no está disponible en este horario.");
-                }
+            try {
+                $startTime = new \DateTime($value);
+                $endTime = new \DateTime($endTimeInput);
+            } catch (\Exception $e) {
+                $fail("Formato de fecha/hora inválido para la verificación de disponibilidad.");
+                return;
+            }
+
+            // Aquí está la lógica de solapamiento
+            $overlappingAppointments = Appointment::where('mechanic_id', $mechanicId)
+                ->where(function ($query) use ($startTime, $endTime) {
+                    $query->where(function ($query) use ($startTime, $endTime) {
+                        $query->where('start_time', '<', $endTime)
+                              ->where('end_time', '>', $startTime);
+                    });
+                })
+                // Excluir la propia cita si se está editando (no aplicable si es una nueva cita)
+                // ->when($this->route('appointment'), function ($query, $appointment) {
+                //     return $query->where('id', '!=', $appointment->id);
+                // })
+                ->count();
+
+            if ($overlappingAppointments > 0) {
+                $fail("El mecánico seleccionado no está disponible en este horario.");
             }
         };
 

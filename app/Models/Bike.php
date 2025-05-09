@@ -4,17 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Bike extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
+        'owner_id',
+        'mechanic_id', // Asegúrate de que esta columna exista si la usas para el "mecánico por defecto"
         'brand',
         'model',
         'handlebar',
@@ -29,32 +28,34 @@ class Bike extends Model
         'tube',
         'brakes',
         'year',
-        'owner_id',
-        'mechanic_id',
         'repair_state',
         'maintenance_state',
     ];
 
+    protected $casts = [
+        // Define casts si tienes, por ejemplo, campos de fecha
+    ];
+
     /**
-     * Get the user that owns the bike (the client).
+     * Get the owner that owns the bike.
      */
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
     /**
-     * Get the mechanic assigned to the bike.
+     * Get the mechanic that the bike is assigned to (if applicable).
      */
-    public function mechanic()
+    public function mechanic(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'mechanic_id');
+        return $this->belongsTo(User::class, 'mechanic_id'); // Asume que mechanic_id apunta a un usuario con rol 'mechanic'
     }
 
     /**
      * Get the appointments for the bike.
      */
-    public function appointments()
+    public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
     }

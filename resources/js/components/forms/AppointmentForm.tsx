@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'moment/locale/es';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+moment.locale('es');
 
 interface AppointmentFormProps {
-  bikes: any[];
-  api: any;
+  bikes: any[]; // Considerar tipar mejor 'any'
+  api: any; // Considerar tipar mejor 'any' (ej. AxiosInstance)
   onSubmitSuccess: () => void;
   onCancel: () => void;
 }
@@ -13,8 +19,6 @@ interface FormState {
   type: string;
   title: string;
   description: string;
-  start_time: string;
-  end_time: string;
 }
 
 const initialFormState: FormState = {
@@ -23,8 +27,6 @@ const initialFormState: FormState = {
   type: '',
   title: '',
   description: '',
-  start_time: '',
-  end_time: '',
 };
 
 const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitSuccess, onCancel }) => {
@@ -34,6 +36,11 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
   const [errorMechanics, setErrorMechanics] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // Cambiado a Set<string>
+  const [unavailableDates, setUnavailableDates] = useState<Set<string>>(new Set());
+  const [loadingAvailability, setLoadingAvailability] = useState<boolean>(false);
+  const [availabilityError, setAvailabilityError] = useState<string | null>(null);
 
   const fetchMechanics = useCallback(async () => {
     try {
@@ -49,6 +56,24 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
     }
   }, [api]);
 
+  const loadMechanicAvailability = useCallback(async (mechanicId: string) => {
+    setLoadingAvailability(true);
+    setAvailabilityError(null);
+    try {
+      const response = await api.get(`/mechanics/${mechanicId}/unavailable-dates?from=${moment().format('YYYY-MM-DD')}`);
+      
+      const datesArray: string[] = Array.isArray(response.data) ? response.data.map((date: any) => String(date)) : [];
+      const datesSet = new Set<string>(datesArray.map((dateString: string) => moment(dateString).format('YYYY-MM-DD')));
+      setUnavailableDates(datesSet);
+    } catch (error) {
+      console.error("Error al cargar la disponibilidad del mecánico:", error);
+      setAvailabilityError("No se pudo cargar la disponibilidad de este mecánico.");
+      setUnavailableDates(new Set<string>()); // Corrección: Especifica el tipo para el Set vacío
+    } finally {
+      setLoadingAvailability(false);
+    }
+  }, [api]);
+
   useEffect(() => {
     fetchMechanics();
   }, [fetchMechanics]);
@@ -56,26 +81,78 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
-  }, []);
+
+    if (name === 'mechanic_id' && value) {
+      loadMechanicAvailability(value);
+      setSelectedDate(null); // Resetear la fecha al cambiar de mecánico
+      setSubmitError(null); // Limpiar cualquier error de selección de fecha
+    }
+  }, [loadMechanicAvailability]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setSubmitError(null);
 
+    // Validación de campos obligatorios
+    if (!formData.bike_id || !formData.mechanic_id || !selectedDate || !formData.type) {
+      setSubmitError("Por favor, selecciona tu bicicleta, un mecánico, una fecha y el tipo de servicio.");
+      setSubmitting(false);
+      return;
+    }
+
+    // Validar que la fecha seleccionada no sea pasada o no disponible
+    const selectedDateMoment = moment(selectedDate);
+    const todayStartOfDay = moment().startOf('day'); // Usar startOf('day') para comparar solo el día
+
+    const isPastDate = selectedDateMoment.isBefore(todayStartOfDay);
+    const isUnavailable = unavailableDates.has(selectedDateMoment.format('YYYY-MM-DD'));
+
+    if (isPastDate || isUnavailable) {
+      // Este error ya debería haberse establecido en onSelectSlot, pero es una doble verificación
+      setSubmitError("La fecha seleccionada no es válida (es pasada o no disponible).");
+      setSubmitting(false);
+      return;
+    }
+
+    // Calcular end_time (ej. 1 hora después de start_time)
+    const startTime = moment(selectedDate).toISOString();
+    const endTime = moment(selectedDate).add(1, 'hour').toISOString(); // Asume una duración de 1 hora
+
+    const appointmentData = {
+      client_id: 1, // Deberías obtener el ID del cliente autenticado
+      mechanic_id: formData.mechanic_id,
+      bike_id: formData.bike_id,
+      type: formData.type,
+      title: formData.title,
+      description: formData.description,
+      start_time: startTime,
+      end_time: endTime, // Añadido el campo end_time
+      status: 'pendiente',
+    };
+
     try {
-      const response = await api.post('/client/appointments', formData);
+      const response = await api.post('/client/appointments', appointmentData);
       console.log('Cita creada con éxito:', response.data);
       onSubmitSuccess();
+      setFormData(initialFormState);
+      setSelectedDate(null);
+      setSubmitError(null); // Limpiar errores al éxito
     } catch (error: any) {
       console.error("Error al crear la cita:", error);
-      setSubmitError(error?.response?.data?.message || "¡Vaya! Hubo un error al solicitar la cita.");
+      // Mejor manejo de errores de validación del backend (código 422)
+      if (error.response && error.response.status === 422 && error.response.data.errors) {
+        const validationMessages = Object.values(error.response.data.errors).flat().join(', ');
+        setSubmitError(`Error de validación: ${validationMessages}`);
+      } else {
+        setSubmitError(error.response?.data?.message || "¡Vaya! Hubo un error al solicitar la cita.");
+      }
     } finally {
       setSubmitting(false);
     }
-  }, [api, formData, onSubmitSuccess]);
+  }, [api, formData, onSubmitSuccess, selectedDate, unavailableDates]);
 
-  const renderInputField = useCallback((label: string, id: keyof FormState, type = 'text', options?: { value: string; label: string }[], rows?: number, colSpan?: string) => (
+  const renderInputField = useCallback((label: string, id: keyof FormState, type = 'text', options?: { value: string; label: string }[], rows?: number, colSpan?: string, defaultOptionLabel?: string) => (
     <div className={`mb-5 ${colSpan}`}>
       <label htmlFor={id} className="block text-gray-800 text-md font-semibold mb-2">{label}:</label>
       {type === 'select' && options ? (
@@ -87,7 +164,8 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
           className="bg-white border border-[#F62364] text-gray-900 rounded-md focus:ring-[#F62364] focus:border-[#F62364] block w-full p-3 shadow-sm"
           required
         >
-          <option value="" className="text-gray-500">Selecciona una opción</option>
+          {defaultOptionLabel && <option value="" disabled hidden>{defaultOptionLabel}</option>}
+          
           {options.map(option => (
             <option key={option.value} value={option.value}>{option.label}</option>
           ))}
@@ -123,19 +201,95 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
     return <div className="text-red-600 font-bold">{errorMechanics}</div>;
   }
 
+  const todayStartOfDay = moment().startOf('day'); // Consistente hoy al inicio del día
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-8">
       <h3 className="text-3xl font-bold mb-8 text-gray-900 text-center tracking-wide"><svg className="w-8 h-8 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> ¡Pide tu Servicio!</h3>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-        {renderInputField("Tu Bicicleta", "bike_id", 'select', [{ value: '', label: 'Elige tu máquina' }, ...bikes.map(bike => ({ value: bike.id, label: `${bike.brand} - ${bike.model}` }))])}
-        {renderInputField("¿Quién te atiende?", "mechanic_id", 'select', [{ value: '', label: 'Selecciona al crack' }, ...mechanics.map(mechanic => ({ value: mechanic.id, label: mechanic.name }))])}
-        {renderInputField("Tipo de Servicio", "type", 'select', [{ value: '', label: '¿Qué necesita tu bici?' }, { value: 'reparacion', label: 'Reparación' }, { value: 'mantenimiento', label: 'Mantenimiento' }])}
-        {renderInputField("Asunto de la Cita", "title")}
-        {renderInputField("Fecha y Hora de Inicio", "start_time", 'datetime-local')}
-        {renderInputField("Fecha y Hora de Fin", "end_time", 'datetime-local')}
+        {renderInputField("Tu Bicicleta", "bike_id", 'select', bikes.map(bike => ({ value: bike.id, label: `${bike.brand} - ${bike.model}` })), undefined, undefined, 'Elige tu máquina')}
+        {renderInputField("¿Quién te atiende?", "mechanic_id", 'select', mechanics.map(mechanic => ({ value: mechanic.id, label: mechanic.name })), undefined, undefined, 'Selecciona al crack')}
+        {renderInputField("Tipo de Servicio", "type", 'select', [{ value: 'reparacion', label: 'Reparación' }, { value: 'mantenimiento', label: 'Mantenimiento' }], undefined, undefined, '¿Qué necesita tu bici?')}
+        {renderInputField("Trabajito a realizar", "title")}
         {renderInputField("Cuéntanos los detalles...", "description", 'textarea', undefined, 5, 'col-span-2')}
 
-        {submitError && <div className="col-span-2 text-red-600 mt-4 text-center font-bold">{submitError}</div>}
+        {formData.mechanic_id && loadingAvailability && <p className="text-sm italic text-gray-600">Cargando disponibilidad...</p>}
+        {formData.mechanic_id && availabilityError && <p className="text-red-500 text-sm">{availabilityError}</p>}
+
+        {formData.mechanic_id && (
+          <div className="mb-5 col-span-2"> {/* Ocupa ambas columnas */}
+            <label className="block text-gray-800 text-md font-semibold mb-2">Selecciona una fecha disponible:</label>
+            <div style={{ height: 300 }}>
+              <Calendar
+                localizer={momentLocalizer(moment)}
+                date={selectedDate || new Date()} // Asegura que el calendario empiece en una fecha actual si no hay selección
+                onNavigate={(newDate) => setSelectedDate(newDate)}
+                views={['month']}
+                selectable
+                onSelectSlot={(slotInfo) => {
+                  const selectedMoment = moment(slotInfo.start);
+                  const isPastDate = selectedMoment.isBefore(todayStartOfDay, 'day'); // Comparar con el inicio del día
+                  const isUnavailable = unavailableDates.has(selectedMoment.format('YYYY-MM-DD'));
+                  
+                  if (!isPastDate && !isUnavailable) {
+                    setSelectedDate(slotInfo.start);
+                    setSubmitError(null); // Limpiar error al seleccionar una fecha válida
+                  } else {
+                    setSelectedDate(null); // Deseleccionar si la fecha es inválida
+                    setSubmitError("Lo sentimos, esta fecha no está disponible. Por favor, elige otra."); // Mensaje específico
+                  }
+                }}
+                dayPropGetter={(date) => {
+                  const dateMoment = moment(date);
+                  const isPastDate = dateMoment.isBefore(todayStartOfDay, 'day'); // Comparar con el inicio del día
+                  const isUnavailable = unavailableDates.has(dateMoment.format('YYYY-MM-DD'));
+                  
+                  const isDisabled = isPastDate || isUnavailable;
+                  const isSelected = selectedDate && dateMoment.isSame(selectedDate, 'day');
+
+                  let style: React.CSSProperties = {};
+                  let className = '';
+
+                  if (isDisabled) {
+                    className = 'rbc-day-unavailable'; // Clase para días no disponibles
+                    style.cursor = 'not-allowed';      // Cursor de no permitido
+                    style.color = '#CC0000';           // Color de texto para días no disponibles
+                  } else {
+                    style.cursor = 'pointer';          // Cursor de puntero para días seleccionables
+                  }
+
+                  if (isSelected && !isDisabled) {
+                    style.backgroundColor = '#F62364'; // Tu color de marca rosa
+                    style.color = 'white';             // Texto blanco para el día seleccionado
+                  }
+                  
+                  // Aseguramos que la celda sea visible y tenga un z-index adecuado
+                  // Estos estilos son para la celda (div.rbc-date-cell)
+                  style.position = 'relative'; 
+                  style.zIndex = 1; 
+
+                  return {
+                    className: className,
+                    style: style,
+                  };
+                }}
+                eventPropGetter={() => ({
+                  className: 'rbc-event-hidden',
+                  style: { display: 'none' },
+                })}
+              />
+            </div>
+            {/* Mostrar el mensaje de fecha seleccionada SOLO si selectedDate no es null */}
+            {selectedDate && !submitError && ( // Solo mostrar si selectedDate existe y no hay un error
+              <p className="text-sm text-gray-600 mt-2">Fecha seleccionada: {moment(selectedDate).format('YYYY-MM-DD')}</p>
+            )}
+            {/* Mensaje de error específico o de "selecciona una fecha" */}
+            {submitError && <p className="text-sm text-red-500 mt-2">{submitError}</p>}
+            {!selectedDate && !submitError && formData.mechanic_id && ( // Si no hay fecha seleccionada Y no hay error (es el estado inicial)
+                <p className="text-sm text-red-500 mt-2">Por favor, selecciona una fecha en el calendario.</p>
+            )}
+          </div>
+        )}
 
         <div className="col-span-2 flex items-center justify-end mt-10">
           <button
