@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Spatie\Permission\Middleware\RoleMiddleware; // ⭐ ¡Añade esta línea!
+use Illuminate\Support\Facades\URL; // <-- ¡Añade esta línea!
+use Spatie\Permission\Middleware\RoleMiddleware; // ⭐ ¡Esta ya la tienes!
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // ⭐ ¡Añade este binding para el middleware 'role'!
+        // ⭐ ¡Este binding para el middleware 'role' ya lo tienes, mantenlo!
         $this->app->bind('role', function ($app) {
             return new RoleMiddleware();
         });
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Añade estas líneas aquí
+        if (env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 }
