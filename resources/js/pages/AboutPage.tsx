@@ -3,9 +3,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom'; // Asumiendo que usas React Router
 
 const AboutPage: React.FC = () => {
-  // Rutas de imágenes de ejemplo (asegúrate de que existan en tu carpeta /public/images)
-  const heroImage = "/images/equipo_ciclista_ciclismo.jpg"; // Imagen de un equipo ciclista o ciclistas en acción
-  const valuesImage = "/images/taller_bicicletas_ciclismo.jpg"; // Imagen de un taller o alguien trabajando con bicis
+  
+  const valuesImage = "/images/fondo_principal.gif"; // Imagen de un taller o alguien trabajando con bicis
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,7 +31,7 @@ const AboutPage: React.FC = () => {
       {/* Sección Héroe: Imagen de fondo y título impactante */}
       <div
         className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] flex items-center justify-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
+        
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <motion.h1
