@@ -8,4 +8,5 @@ export interface FormFieldProps {
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
   required?: boolean;
   placeholder?: string;
+  error?: string | null;
 }
