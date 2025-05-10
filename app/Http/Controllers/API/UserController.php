@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rules\Password; // ¡Asegúrate de que esta línea esté presente!
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $users = User::with('roles')->paginate(10); // Paginamos los resultados, 10 usuarios por página (puedes ajustar este número)
+        $users = User::with('roles')->paginate(10);
         return response()->json($users);
     }
 
@@ -26,10 +27,17 @@ class UserController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'role' => ['required', Rule::in(['admin', 'client', 'mechanic'])], // Permite asignar estos roles al crear
+            'name' => ['required', 'string', 'max:255', 'min:2'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => [
+                'required',
+                'string',
+                Password::min(8)   // <--- ¡Asegúrate de que sea min(8) y no min(6)!
+                          ->letters()
+                          ->numbers(),
+                'confirmed',
+            ],
+            'role' => ['required', Rule::in(['admin', 'client', 'mechanic'])],
         ]);
 
         $user = User::create([
@@ -39,7 +47,7 @@ class UserController extends Controller
         ]);
 
         $user->assignRole($request->role);
-        $user->load('roles'); // Cargar los roles después de asignarlos
+        $user->load('roles');
 
         return response()->json($user, 201);
     }
@@ -59,20 +67,30 @@ class UserController extends Controller
     public function update(Request $request, User $user): JsonResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'min:2'],
             'email' => ['required', 'string', 'email', Rule::unique('users')->ignore($user->id)],
-            'password' => 'nullable|string|min:6|confirmed', // Contraseña opcional al actualizar
-            'role' => ['required', Rule::in(['admin', 'client', 'mechanic'])], // Permite cambiar el rol al actualizar
+            'password' => [
+                'nullable',
+                'string',
+                Password::min(8)
+                          ->letters()
+                          ->numbers(),
+                'confirmed',
+            ],
+            'role' => ['required', Rule::in(['admin', 'client', 'mechanic'])],
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-        // ⭐ Actualizar el rol del usuario. Primero sincronizamos para eliminar roles existentes.
+
         $user->syncRoles([$request->role]);
         $user->load('roles');
+
+        $user->save();
 
         return response()->json($user);
     }
