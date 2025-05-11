@@ -1,3 +1,12 @@
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
+
 # Web Tripasión
 
 ¡Bienvenido al repositorio del proyecto "Web Tripasión"! Esta aplicación web es una plataforma integral para la tienda de deportes Tripasión, ofreciendo funcionalidades tanto para la gestión de un taller de bicicletas como para una futura tienda online.
@@ -9,38 +18,38 @@ La aplicación está diseñada para ser utilizada por tres tipos de usuarios:
 * **Clientes:**
     * Registro y gestión de bicicletas para servicios de taller (reparaciones, mantenimiento, montajes personalizados).
     * Consulta del estado en tiempo real de los servicios de su bicicleta.
-    * Comunicación directa con el mecánico asignado a través de un chat integrado.
+    * (Futuro)Comunicación directa con el mecánico asignado a través de un chat integrado.
     * (Futuro) Compras online en la tienda.
 * **Mecánicos:**
     * Acceso a una vista organizada de los servicios pendientes y asignados.
     * Capacidad para actualizar el estado de las bicicletas en reparación.
-    * Consulta del stock de piezas y artículos.
-    * Comunicación con los clientes a través del chat.
+    * (Futuro)Consulta del stock de piezas y artículos.
+    * (Futuro)Comunicación con los clientes a través del chat.
 * **Administradores:**
     * Gestión completa de usuarios (clientes, mecánicos, otros administradores).
-    * Gestión de citas del taller.
-    * Gestión de bicicletas y su historial de servicio.
-    * Gestión de stock de taller/tienda.
-    * Gestión de horarios del taller.
-    * Gestión de documentos relacionados.
+    * (Futuro)Gestión de citas del taller.
+    * Gestión de bicicletas.
+    * (Futuro)Gestión de stock de taller/tienda.
+    * (Futuro)Gestión de horarios del taller.
+    * (Futuro)Gestión de documentos relacionados.
 
 ## 🛠️ Tecnologías Utilizadas
 
-Este proyecto ha sido desarrollado utilizando las siguientes tecnologías:
+Este proyecto ha sido desarrollado utilizando un stack moderno y robusto:
 
 * **Backend:** [Laravel](https://laravel.com/) (PHP Framework)
-    * API RESTful para la comunicación con el frontend.
+    * Implementación de una API RESTful para la comunicación con el frontend.
     * Base de datos: [MySQL](https://www.mysql.com/)
-* **Frontend:** [React](https://react.dev/) (JavaScript Library)
-    * Desarrollado con [TypeScript](https://www.typescriptlang.org/) para una mejor tipificación y robustez.
-    * Manejo de rutas con [React Router DOM](https://reactrouter.com/en/main).
+* **Frontend:** [React](https://react.dev/) (Librería de JavaScript para interfaces de usuario)
+    * Desarrollado con [TypeScript](https://www.typescriptlang.org/) para una mejor tipificación, escalabilidad y robustez del código.
+    * Manejo de rutas y navegación con [React Router DOM](https://reactrouter.com/en/main).
 * **Estilos:** [Tailwind CSS](https://tailwindcss.com/) (Framework CSS Utility-First)
-* **Compilador/Bundler:** [Vite](https://vitejs.dev/)
-* **Servidor Web (Desarrollo):** Apache (en macOS)
+* **Compilador/Bundler:** [Vite](https://vitejs.dev/) (Herramienta de construcción de próxima generación para proyectos web)
+* **Servidor Web (Desarrollo):** Apache (utilizado en macOS para el entorno de desarrollo)
 * **Gestión de Dependencias:**
-    * Composer (para PHP/Laravel)
-    * npm (para Node.js/React/Vite)
-* **Control de Versiones:** Git / GitHub
+    * [Composer](https://getcomposer.org/) (para PHP/Laravel)
+    * [npm](https://www.npmjs.com/) (Node Package Manager, para Node.js/React/Vite)
+* **Control de Versiones:** [Git](https://git-scm.com/) / [GitHub](https://github.com/)
 
 ## 💻 Requisitos del Sistema
 
@@ -57,22 +66,24 @@ Para ejecutar este proyecto localmente, necesitarás tener instalado:
 
 Sigue estos pasos para poner en marcha el proyecto en tu máquina local:
 
+
 ### 1. Clonar el Repositorio
 
-```bash
-git clone [URL_DE_TU_REPOSITORIO_GITHUB]
+bash
+git clone [https://github.com/Isra-Vila/Final-Degree-Project-DAW](https://github.com/Isra-Vila/Final-Degree-Project-DAW)
 cd Tripasion # O el nombre de tu carpeta raíz del proyecto
-2. Configuración del Backend (Laravel)
+
+
+### 2. Configuración del Backend (Laravel)
 Instalar Dependencias de Composer:
 
 Bash
-
 composer install
+
 Crear Archivo de Entorno:
 Copia el archivo de ejemplo .env.example a .env:
 
 Bash
-
 cp .env.example .env
 Generar Clave de Aplicación:
 
@@ -106,20 +117,20 @@ PHP
 Ejecutar Migraciones y Seeders (Opcional, para datos de prueba):
 
 Bash
-
 php artisan migrate
-php artisan db:seed # Ejecutar si tienes seeders para poblar la base de datos con datos de prueba
+php artisan db:seed # Ejecutar para poblar la base de datos con datos de prueba
+
 Configurar el Servidor Web (Apache/Nginx):
 Asegúrate de que tu servidor web (Apache en tu caso) esté configurado para apuntar a la carpeta public de tu proyecto Laravel. Esto es crucial para que el servidor web sepa dónde encontrar los archivos de tu aplicación. Para Apache en macOS, esto a menudo implica configurar un Virtual Host en httpd-vhosts.conf o similar.
 
-3. Configuración del Frontend (React/Vite)
+
+### 3. Configuración del Frontend (React/Vite)
 Instalar Dependencias de NPM:
 
 Bash
-
 npm install
-Configurar Variables de Entorno de Frontend (si las usas):
-Si tu frontend usa variables de entorno (ej. VITE_API_URL para la URL de tu API), asegúrate de que estén configuradas en un archivo .env en la raíz de tu proyecto Laravel (donde también está tu .env principal). Vite las leerá desde allí si no hay un .env.local específico para el frontend. Por ejemplo:
+
+Configurar Variables de Entorno de Frontend:
 
 Fragmento de código
 
@@ -127,58 +138,28 @@ Fragmento de código
 VITE_API_URL=http://localhost:8000/api # Asegúrate de que coincida con la URL de tu API de Laravel
 Asegúrate de que tu vite.config.js apunte a la carpeta public/build de Laravel para la salida de los assets compilados, lo cual ya deberías tener configurado.
 
-4. Ejecutar el Proyecto
-Para ejecutar la aplicación en modo de desarrollo, necesitarás dos terminales: una para el backend de Laravel y otra para el servidor de desarrollo de Vite (frontend).
 
-Terminal 1: Iniciar el Servidor de Desarrollo de Laravel
+### 4. Ejecutar el Proyecto (Modo Producción Local)
+Para ejecutar la aplicación con los assets de frontend ya compilados (como en un entorno de producción o para pruebas del build), sigue estos pasos:
 
-Bash
-
-php artisan serve
-Esto iniciará el servidor de desarrollo de Laravel, generalmente en http://localhost:8000. Este es el servidor al que tu API de React hará las peticiones.
-
-Terminal 2: Iniciar el Servidor de Desarrollo de Vite (Frontend)
+Compilar los Assets del Frontend:
+Primero, asegúrate de que los archivos de tu aplicación React estén compilados y listos. Esto generará los archivos optimizados (CSS, JavaScript) en la carpeta public/build de tu proyecto Laravel.
 
 Bash
-
-npm run dev
-Esto iniciará el servidor de desarrollo de Vite, que compila y sirve tu aplicación React. Generalmente se inicia en http://localhost:5173. Vite se encargará de que los cambios en tu frontend se recarguen automáticamente en el navegador.
-
-Ahora puedes acceder a tu aplicación en tu navegador visitando la URL que te proporcione Vite (normalmente http://localhost:5173). Laravel servirá el frontend a través de la directiva @vite en tus vistas Blade.
-
-📦 Compilar para Producción
-Cuando estés listo para desplegar la aplicación, deberás compilar los assets de frontend. Es crucial que hagas esto antes de subir tu código a un servidor de producción (como Railway).
-
-Bash
-
 npm run build
-Este comando generará los archivos optimizados (CSS, JavaScript) de tu aplicación React/Vite en la carpeta public/build de tu proyecto Laravel. Estos son los archivos estáticos que tu servidor web (Apache/Nginx) servirá en un entorno de producción.
 
-Después de compilar, es una buena práctica limpiar las cachés de Laravel para asegurar que se usen las últimas versiones de configuración, rutas, etc.:
+Limpiar Cachés de Laravel:
+Después de compilar, es una buena práctica limpiar las cachés de Laravel para asegurar que se usen las últimas versiones de configuración, rutas y vistas:
 
 Bash
-
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
-🌍 Despliegue en Railway (Ejemplo)
-Para desplegar esta aplicación en Railway, se recomienda seguir su guía de despliegue de Laravel y Node.js.
 
-Asegúrate de configurar las siguientes variables de entorno en el panel de Railway (en la sección "Variables" o "Environment Variables" de tu servicio):
-
-APP_URL: La URL pública de tu aplicación desplegada en Railway (ej. https://tu-proyecto.up.railway.app).
-DB_CONNECTION: mysql
-DB_HOST: [Host de tu base de datos de Railway]
-DB_PORT: [Puerto de tu base de datos de Railway]
-DB_DATABASE: [Nombre de tu base de datos de Railway]
-DB_USERNAME: [Usuario de tu base de datos de Railway]
-DB_PASSWORD: [Contraseña de tu base de datos de Railway]
-VITE_API_URL: La URL de tu API en Railway (ej. https://tu-proyecto.up.railway.app/api). Es crucial que esta URL apunte al endpoint correcto en tu aplicación desplegada.
-APP_KEY: La clave de cifrado de tu aplicación Laravel. Puedes generarla con php artisan key:generate localmente y luego copiar el valor que aparece en tu .env a las variables de entorno de Railway.
-Railway debería detectar automáticamente tus scripts de build y start definidos en package.json y Composer. Si no lo hace, puedes configurarlos manualmente en las opciones de tu servicio en Railway.
 
 🤝 Contribución
-Si deseas contribuir a este proyecto, por favor, ponte en contacto con [Tu Nombre/Contacto] para discutir los detalles.
+Si deseas contribuir a este proyecto, por favor, ponte en contacto con Israel Vilavert para discutir los detalles:
+    - isvium@gmail.com
+    - https://www.linkedin.com/in/isravilavert/
+ 
 
-📜 Licencia
-Este proyecto está bajo la Licencia [Nombre de la Licencia, ej. MIT License]. Consulta el archivo LICENSE para más detalles.
