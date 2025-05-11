@@ -6,7 +6,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\BikeController;
-use App\Http\Controllers\API\AppointmentController;
+use App\Http\Controllers\API\AppointmentController; // Asegúrate de que el namespace sea correcto para AppointmentController
 use Illuminate\Http\Request;
 
 // Rutas públicas
@@ -27,36 +27,42 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Rutas para CLIENTES
     Route::middleware('role:client')->group(function () {
-        // Ruta para el perfil del cliente: /client/{id}
-        Route::get('/client/{client}', [ClientController::class, 'show'])->name('client.profile');
-        Route::get('/client/dashboard', [ClientController::class, 'dashboard']);
 
+        // ⭐ CAMBIO CLAVE AQUÍ: Mueve este bloque `Route::prefix('client')`
+        // para que esté antes de la ruta dinámica '/client/{client}'
         Route::prefix('client')->group(function () {
             // Rutas para las bicicletas del cliente
             Route::get('/bikes', [BikeController::class, 'clientBikes']);
             Route::post('/bikes', [BikeController::class, 'store']);
-            Route::get('/bikes/{bike}', [BikeController::class, 'showBike']);
+            Route::get('/bikes/{bike}', [BikeController::class, 'showBike']); // Si showBike es un método en BikeController
             Route::put('/bikes/{bike}', [BikeController::class, 'update']);
             Route::delete('/bikes/{bike}', [BikeController::class, 'destroy']);
 
             // Rutas para la gestión de citas del cliente
+            // Asegúrate de que el namespace sea correcto para AppointmentController
             Route::apiResource('appointments', AppointmentController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
         });
+
+        // Ahora, la ruta de perfil dinámica va después
+        Route::get('/client/{client}', [ClientController::class, 'show'])->name('client.profile');
+        Route::get('/client/dashboard', [ClientController::class, 'dashboard']);
     });
 
     // Rutas para MECÁNICOS
     Route::middleware('role:mechanic')->group(function () {
         Route::get('/mechanic/dashboard', [MechanicController::class, 'dashboard']);
+        // Asegúrate de que estos métodos existen en sus respectivos controladores
         Route::get('/mechanic/assigned-bikes', [BikeController::class, 'assignedBikesForMechanic']);
         Route::get('/mechanic/assigned-appointments', [AppointmentController::class, 'assignedAppointments']);
     });
 
     // Ruta general para citas (MECÁNICOS y ADMINS)
     Route::middleware('role:mechanic|admin')->group(function () {
+        // Esta ruta es para UPDATE de citas, ya que AppointmentController::update es un método PUT
         Route::put('/appointments/{appointment}', [AppointmentController::class, 'update']);
     });
 
-    // Rutas generales
+    // Rutas generales (accesibles por cualquier rol autenticado que tenga permiso)
     Route::get('/mechanics', [UserController::class, 'getMechanics']);
     Route::get('/mechanics/{mechanicId}/unavailable-dates', [AppointmentController::class, 'getUnavailableDatesForMechanic']);
 

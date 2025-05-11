@@ -1,10 +1,11 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://tripasion.com/api", // URL correcta de la API
+  baseURL: "/api", // URL correcta de la API
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, 
 });
 
 // Interceptor para añadir el token a las solicitudes

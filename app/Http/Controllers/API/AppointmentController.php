@@ -14,9 +14,7 @@ use Illuminate\Support\Carbon;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request): JsonResponse
     {
         $user = Auth::user();
@@ -24,8 +22,7 @@ class AppointmentController extends Controller
         if ($user->hasRole('client')) {
             $appointments = $user->clientAppointments()->with(['bike', 'mechanic'])->get();
         } elseif ($user->hasRole('mechanic')) {
-            // Aunque este es el método index, si se llama desde una ruta genérica
-            // asegúrate de que las relaciones se carguen.
+            
             $appointments = $user->mechanicAppointments()->with(['client', 'bike'])->get();
         } elseif ($user->hasRole('admin')) {
             $appointments = Appointment::with(['client', 'bike', 'mechanic'])->get();
@@ -36,9 +33,7 @@ class AppointmentController extends Controller
         return response()->json($appointments);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StoreAppointmentRequest $request): JsonResponse
     {
         $appointment = Appointment::create($request->validated());
@@ -54,9 +49,7 @@ class AppointmentController extends Controller
         return response()->json($appointment->load(['client', 'bike', 'mechanic']), 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Appointment $appointment): JsonResponse
     {
         $user = Auth::user();
@@ -72,9 +65,7 @@ class AppointmentController extends Controller
         return response()->json($appointment->load(['client', 'bike', 'mechanic']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(UpdateAppointmentRequest $request, Appointment $appointment): JsonResponse
     {
         $appointment->update($request->validated());
@@ -94,7 +85,7 @@ class AppointmentController extends Controller
                     $bike->update(['maintenance_state' => 'mantenimiento terminado', 'repair_state' => null]);
                 }
             }
-            // ⭐ Manejo del estado 'failed' y 'canceled' (o 'pending') para restablecer el estado de la bici a null/disponible
+            //Manejo del estado 'failed' y 'canceled' (o 'pending') para restablecer el estado de la bici a null/disponible
             elseif ($appointment->status === 'canceled' || $appointment->status === 'failed' || $appointment->status === 'pending') {
                 $bike->update(['repair_state' => null, 'maintenance_state' => null]);
             }
@@ -103,9 +94,7 @@ class AppointmentController extends Controller
         return response()->json($appointment->load(['client', 'bike', 'mechanic']));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Appointment $appointment): JsonResponse
     {
         $user = Auth::user();
@@ -114,8 +103,6 @@ class AppointmentController extends Controller
             return response()->json(['message' => 'Acceso denegado'], 403);
         }
 
-        // Un mecánico no debería poder eliminar citas, solo un admin.
-        // Si el rol de mecánico necesita poder eliminar citas, esto debe ser considerado cuidadosamente.
         if (!$user->hasRole('admin') && $user->hasRole('mechanic')) {
             return response()->json(['message' => 'Acceso denegado'], 403);
         }
@@ -158,9 +145,9 @@ class AppointmentController extends Controller
         }
 
         $appointments = Appointment::where('mechanic_id', $mechanic->id)
-                                   ->with(['client', 'bike', 'mechanic']) // Asegúrate de cargar el cliente, la bici y el propio mecánico
-                                   ->orderBy('start_time')
-                                   ->get();
+                                    ->with(['client', 'bike', 'mechanic']) 
+                                    ->orderBy('start_time')
+                                    ->get();
 
         return response()->json($appointments);
     }
