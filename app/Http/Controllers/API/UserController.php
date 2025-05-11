@@ -8,22 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\Rules\Password; // ¡Asegúrate de que esta línea esté presente!
+use Illuminate\Validation\Rules\Password; 
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(): JsonResponse
     {
         $users = User::with('roles')->paginate(10);
         return response()->json($users);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request): JsonResponse
     {
         $request->validate([
@@ -32,7 +28,7 @@ class UserController extends Controller
             'password' => [
                 'required',
                 'string',
-                Password::min(8)   // <--- ¡Asegúrate de que sea min(8) y no min(6)!
+                Password::min(8)   
                           ->letters()
                           ->numbers(),
                 'confirmed',
@@ -52,18 +48,12 @@ class UserController extends Controller
         return response()->json($user, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(User $user): JsonResponse
     {
         $user->load('roles');
         return response()->json($user);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, User $user): JsonResponse
     {
         $request->validate([
@@ -73,8 +63,8 @@ class UserController extends Controller
                 'nullable',
                 'string',
                 Password::min(8)
-                          ->letters()
-                          ->numbers(),
+                        ->letters()
+                        ->numbers(),
                 'confirmed',
             ],
             'role' => ['required', Rule::in(['admin', 'client', 'mechanic'])],
@@ -95,18 +85,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $user): JsonResponse
     {
         $user->delete();
         return response()->json(['message' => 'Usuario eliminado correctamente']);
     }
 
-    /**
-     * Get a list of users with the 'mechanic' role.
-     */
     public function getMechanics(): JsonResponse
     {
         $mechanics = User::whereHas('roles', function ($query) {

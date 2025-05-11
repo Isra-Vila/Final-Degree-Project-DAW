@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
-import fs from 'fs';  // Importa fs para leer los archivos
+import fs from 'fs';  
 
 export default defineConfig({
     server: {
@@ -9,17 +9,17 @@ export default defineConfig({
         port: 5173,
         strictPort: true,
         
-        //origin: 'https://tripasion.com',  // Aquí definimos el origen correcto
+        
         hmr: {
-            protocol: 'ws',  // WebSockets seguros, porque usas HTTPS
-            host: 'localhost',  // Usamos el mismo dominio para HMR
-            port: 5173,  // El puerto para HMR
+            protocol: 'ws',  
+            host: 'localhost',  
+            port: 5173,  
         },
         proxy: {
             '/api': {
-                target: 'https://tripasion.com',  // Dirección de tu servidor backend con HTTPS
+                target: 'https://tripasion.com',  
                 changeOrigin: true,
-                secure: true,  // Como el backend también usa HTTPS, ponlo en true
+                secure: true,  
             },
         },
     },
@@ -29,7 +29,7 @@ export default defineConfig({
             refresh: true,
         }),
         react({
-            // ⭐ ¡Añade esta línea para deshabilitar Fast Refresh!
+            
             fastRefresh: false,
         }),
     ],
