@@ -169,36 +169,22 @@ cd Final-Degree-Project-DAW # Asegúrate de entrar a la carpeta raíz del proyec
 
 ### 4. Ejecutar el Proyecto
 
-Para el desarrollo, puedes ejecutar el frontend y el backend por separado:
-
-1.  **Iniciar el Servidor de Desarrollo de Laravel (Backend API):**
-
-        php artisan serve
-
-    Esto iniciará el servidor en `http://127.0.0.1:8000` (o similar). Tu API estará disponible en `http://127.0.0.1:8000/api`.
-
-2.  **Iniciar el Servidor de Desarrollo de Vite (Frontend):**
-
-        npm run dev
-
-    Esto iniciará el servidor de desarrollo de Vite, que servirá tu aplicación React (generalmente en `http://localhost:5173`). Asegúrate de que la variable `VITE_API_URL` en tu `.env` apunte a tu servidor Laravel (`http://127.0.0.1:8000/api`).
-
-**Para una ejecución en modo de producción local (o para probar el build):**
+Para la forma de ejecución más común y estable:
 
 1.  **Compilar los Assets del Frontend:**
+    Primero, compila los archivos de tu aplicación React. Esto generará los archivos optimizados (CSS, JavaScript) en la carpeta `public/build` de tu proyecto Laravel.
 
         npm run build
 
-    Esto generará los archivos optimizados de tu aplicación React en la carpeta `public/build` de tu proyecto Laravel.
-
 2.  **Limpiar Cachés de Laravel:**
+    Después de compilar, es una buena práctica limpiar las cachés de Laravel para asegurar que se usen las últimas versiones de configuración, rutas y vistas:
 
         php artisan config:clear
         php artisan cache:clear
         php artisan view:clear
 
 3.  **Acceder a la aplicación:**
-    Una vez que los assets estén compilados y el servidor web (Apache/Nginx) esté sirviendo la carpeta `public` de Laravel, puedes acceder a la aplicación desde la URL de tu servidor web (ej. `http://localhost/`).
+    Una vez que los assets estén compilados y tu servidor web (Apache/Nginx) esté sirviendo correctamente la carpeta `public` de Laravel, puedes acceder a la aplicación desde la URL de tu servidor web (ej. `http://localhost/`).
 
 ---
 
@@ -206,27 +192,28 @@ Para el desarrollo, puedes ejecutar el frontend y el backend por separado:
 
 La estructura principal de tu proyecto sigue la convención estándar de Laravel, con la integración de los assets de React/Vite:
 
+```
 Final-Degree-Project-DAW/
-├── app/               # Lógica principal de la aplicación (Modelos, Controladores, etc.)
-├── bootstrap/         # Archivos de arranque de Laravel
-├── config/            # Configuraciones del framework Laravel
-├── database/          # Migraciones y seeds de la base de datos
-├── public/            # Archivos públicos (index.php, CSS, JS compilados)
-│   └── build/         # Assets compilados por Vite (JS, CSS, etc.)
-├── resources/         # Código fuente del frontend (React) y vistas de Laravel
-│   ├── js/            # Componentes y lógica en React (.jsx/.tsx)
-│   └── views/         # Vistas Blade de Laravel (punto de entrada para React)
-├── routes/            # Definición de rutas web (web.php) y API (api.php)
-├── storage/           # Archivos generados, logs, cachés, etc.
-├── tests/             # Pruebas unitarias y de integración (PHPUnit)
-├── vendor/            # Dependencias PHP (instaladas vía Composer)
-├── node_modules/      # Dependencias JS (instaladas vía NPM)
-├── .env               # Variables de entorno (Laravel y Vite)
-├── package.json       # Configuración y scripts de NPM (Vite, React)
-├── composer.json      # Configuración de dependencias PHP
-├── vite.config.js     # Configuración de Vite para compilación de assets
-└── README.md          # Documentación del proyecto (este archivo)
-
+├── app/                # Lógica de la aplicación (Modelos, Controladores, etc.)
+├── bootstrap/          # Archivos de inicio de Laravel
+├── config/             # Configuraciones del framework Laravel
+├── database/           # Migraciones y seeds de la base de datos
+├── public/             # Archivos públicos (index.php, CSS, JS compilados)
+│   └── build/          # Aquí se compilan los assets de Vite (JS, CSS, etc.)
+├── resources/          # Código fuente del frontend (React) y vistas de Laravel
+│   ├── js/             # Archivos .jsx/.tsx de React
+│   └── views/          # Vistas Blade de Laravel (ej. el punto de entrada de React)
+├── routes/             # Definición de rutas web (web.php) y API (api.php)
+├── storage/            # Archivos generados, logs, cachés, etc.
+├── tests/              # Pruebas unitarias y de integración (PHPUnit)
+├── vendor/             # Dependencias PHP (instaladas vía Composer)
+├── node_modules/       # Dependencias JS (instaladas vía NPM)
+├── .env                # Variables de entorno para Laravel y Vite
+├── package.json        # Configuración y scripts de NPM (Vite, React)
+├── composer.json       # Configuración de dependencias PHP
+├── vite.config.js      # Configuración de Vite para compilación de assets
+└── README.md           # Documentación del proyecto (este archivo)
+```
 
 
 ---
