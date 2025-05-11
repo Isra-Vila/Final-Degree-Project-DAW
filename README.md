@@ -1,255 +1,184 @@
-`<p align="center"><a href="https://github.com/Isra-Vila/Final-Degree-Project-DAW" target="_blank"><img src="/path/to/logo.png" width="400" alt="Tripasión Logo"></a></p>``<p align="center">
-<a href="https://github.com/Isra-Vila/Final-Degree-Project-DAW"><img src="https://img.shields.io/badge/Estado-En%20Desarrollo-yellow" alt="Estado del Proyecto"></a>
-<a href="https://github.com/Isra-Vila/Final-Degree-Project-DAW"><img src="https://img.shields.io/badge/Versión-1.0.0-blue" alt="Versión"></a>
-<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/Licencia-MIT-green" alt="Licencia"></a>
-<a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-10.x-red" alt="Laravel"></a>
-<a href="https://react.dev"><img src="https://img.shields.io/badge/React-18.x-blue" alt="React"></a>
-</p>`## Sobre Web Tripasión
+# Web Tripasión
 
-Web Tripasión es una aplicación web integral para la tienda de deportes Tripasión, que ofrece una plataforma completa para la gestión de un taller de bicicletas y una futura tienda online. El proyecto combina un potente backend desarrollado en Laravel con un frontend moderno en React, proporcionando una experiencia fluida tanto para clientes como para el personal de la tienda.
+¡Bienvenido al repositorio del proyecto "Web Tripasión"! Esta aplicación web es una plataforma integral para la tienda de deportes Tripasión, ofreciendo funcionalidades tanto para la gestión de un taller de bicicletas como para una futura tienda online.
 
-## Características Principales
+## 🚀 Características Principales
 
-La aplicación está diseñada para tres tipos de usuarios, cada uno con funcionalidades específicas:
+La aplicación está diseñada para ser utilizada por tres tipos de usuarios:
 
-### Clientes
+* **Clientes:**
+    * Registro y gestión de bicicletas para servicios de taller (reparaciones, mantenimiento, montajes personalizados).
+    * Consulta del estado en tiempo real de los servicios de su bicicleta.
+    * Comunicación directa con el mecánico asignado a través de un chat integrado.
+    * (Futuro) Compras online en la tienda.
+* **Mecánicos:**
+    * Acceso a una vista organizada de los servicios pendientes y asignados.
+    * Capacidad para actualizar el estado de las bicicletas en reparación.
+    * Consulta del stock de piezas y artículos.
+    * Comunicación con los clientes a través del chat.
+* **Administradores:**
+    * Gestión completa de usuarios (clientes, mecánicos, otros administradores).
+    * Gestión de citas del taller.
+    * Gestión de bicicletas y su historial de servicio.
+    * Gestión de stock de taller/tienda.
+    * Gestión de horarios del taller.
+    * Gestión de documentos relacionados.
 
-- Registro y gestión de bicicletas para servicios de taller (reparaciones, mantenimiento, montajes personalizados)
-- Consulta del estado en tiempo real de los servicios de su bicicleta
-- Comunicación directa con el mecánico asignado a través de un chat integrado
-- *(Futuro)* Compras online en la tienda
+## 🛠️ Tecnologías Utilizadas
 
+Este proyecto ha sido desarrollado utilizando las siguientes tecnologías:
 
-### Mecánicos
+* **Backend:** [Laravel](https://laravel.com/) (PHP Framework)
+    * API RESTful para la comunicación con el frontend.
+    * Base de datos: [MySQL](https://www.mysql.com/)
+* **Frontend:** [React](https://react.dev/) (JavaScript Library)
+    * Desarrollado con [TypeScript](https://www.typescriptlang.org/) para una mejor tipificación y robustez.
+    * Manejo de rutas con [React Router DOM](https://reactrouter.com/en/main).
+* **Estilos:** [Tailwind CSS](https://tailwindcss.com/) (Framework CSS Utility-First)
+* **Compilador/Bundler:** [Vite](https://vitejs.dev/)
+* **Servidor Web (Desarrollo):** Apache (en macOS)
+* **Gestión de Dependencias:**
+    * Composer (para PHP/Laravel)
+    * npm (para Node.js/React/Vite)
+* **Control de Versiones:** Git / GitHub
 
-- Vista organizada de los servicios pendientes y asignados
-- Actualización del estado de las bicicletas en reparación
-- Consulta del stock de piezas y artículos
-- Comunicación con los clientes a través del chat
+## 💻 Requisitos del Sistema
 
+Para ejecutar este proyecto localmente, necesitarás tener instalado:
 
-### Administradores
+* **PHP >= 8.1**
+* **Node.js >= 16**
+* **Composer**
+* **npm** (o Yarn)
+* **MySQL** (o un gestor de bases de datos compatible)
+* **Un servidor web** (Apache o Nginx)
 
-- Gestión completa de usuarios (clientes, mecánicos, otros administradores)
-- Gestión de citas del taller
-- Gestión de bicicletas y su historial de servicio
-- Gestión de stock de taller/tienda
-- Gestión de horarios del taller
-- Gestión de documentos relacionados
+## 🚀 Instalación y Configuración Local
 
-
-## Capturas de Pantalla
-
-`<p align="center">
-<img src="/path/to/screenshot-client.png" width="600" alt="Panel de Cliente">
-<p align="center"><em>Vista del panel de control para clientes donde pueden gestionar sus bicicletas y servicios</em></p>
-</p>``<p align="center">
-<img src="/path/to/screenshot-mechanic.png" width="600" alt="Panel de Mecánico">
-<p align="center"><em>Interfaz para mecánicos con listado de servicios pendientes y en proceso</em></p>
-</p>``<p align="center">
-<img src="/path/to/screenshot-admin.png" width="600" alt="Panel de Administración">
-<p align="center"><em>Vista del panel de administración con acceso a todas las funcionalidades</em></p>
-</p>`## Arquitectura del Proyecto
-
-```mermaid
-Diagram.download-icon {
-            cursor: pointer;
-            transform-origin: center;
-        }
-        .download-icon .arrow-part {
-            transition: transform 0.35s cubic-bezier(0.35, 0.2, 0.14, 0.95);
-             transform-origin: center;
-        }
-        button:has(.download-icon):hover .download-icon .arrow-part, button:has(.download-icon):focus-visible .download-icon .arrow-part {
-          transform: translateY(-1.5px);
-        }
-        #mermaid-diagram-rld4{font-family:var(--font-geist-sans);font-size:12px;fill:#000000;}#mermaid-diagram-rld4 .error-icon{fill:#552222;}#mermaid-diagram-rld4 .error-text{fill:#552222;stroke:#552222;}#mermaid-diagram-rld4 .edge-thickness-normal{stroke-width:1px;}#mermaid-diagram-rld4 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-diagram-rld4 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-diagram-rld4 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-diagram-rld4 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-diagram-rld4 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-diagram-rld4 .marker{fill:#666;stroke:#666;}#mermaid-diagram-rld4 .marker.cross{stroke:#666;}#mermaid-diagram-rld4 svg{font-family:var(--font-geist-sans);font-size:12px;}#mermaid-diagram-rld4 p{margin:0;}#mermaid-diagram-rld4 .label{font-family:var(--font-geist-sans);color:#000000;}#mermaid-diagram-rld4 .cluster-label text{fill:#333;}#mermaid-diagram-rld4 .cluster-label span{color:#333;}#mermaid-diagram-rld4 .cluster-label span p{background-color:transparent;}#mermaid-diagram-rld4 .label text,#mermaid-diagram-rld4 span{fill:#000000;color:#000000;}#mermaid-diagram-rld4 .node rect,#mermaid-diagram-rld4 .node circle,#mermaid-diagram-rld4 .node ellipse,#mermaid-diagram-rld4 .node polygon,#mermaid-diagram-rld4 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-diagram-rld4 .rough-node .label text,#mermaid-diagram-rld4 .node .label text{text-anchor:middle;}#mermaid-diagram-rld4 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-diagram-rld4 .node .label{text-align:center;}#mermaid-diagram-rld4 .node.clickable{cursor:pointer;}#mermaid-diagram-rld4 .arrowheadPath{fill:#333333;}#mermaid-diagram-rld4 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-diagram-rld4 .flowchart-link{stroke:#666;fill:none;}#mermaid-diagram-rld4 .edgeLabel{background-color:white;text-align:center;}#mermaid-diagram-rld4 .edgeLabel p{background-color:white;}#mermaid-diagram-rld4 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-diagram-rld4 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-diagram-rld4 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-diagram-rld4 .cluster text{fill:#333;}#mermaid-diagram-rld4 .cluster span{color:#333;}#mermaid-diagram-rld4 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:var(--font-geist-sans);font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-diagram-rld4 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-diagram-rld4 .flowchart-link{stroke:hsl(var(--gray-400));stroke-width:1px;}#mermaid-diagram-rld4 .marker,#mermaid-diagram-rld4 marker,#mermaid-diagram-rld4 marker *{fill:hsl(var(--gray-400))!important;stroke:hsl(var(--gray-400))!important;}#mermaid-diagram-rld4 .label,#mermaid-diagram-rld4 text,#mermaid-diagram-rld4 text>tspan{fill:hsl(var(--black))!important;color:hsl(var(--black))!important;}#mermaid-diagram-rld4 .background,#mermaid-diagram-rld4 rect.relationshipLabelBox{fill:hsl(var(--white))!important;}#mermaid-diagram-rld4 .entityBox,#mermaid-diagram-rld4 .attributeBoxEven{fill:hsl(var(--gray-150))!important;}#mermaid-diagram-rld4 .attributeBoxOdd{fill:hsl(var(--white))!important;}#mermaid-diagram-rld4 .label-container,#mermaid-diagram-rld4 rect.actor{fill:hsl(var(--white))!important;stroke:hsl(var(--gray-400))!important;}#mermaid-diagram-rld4 line{stroke:hsl(var(--gray-400))!important;}#mermaid-diagram-rld4 :root{--mermaid-font-family:var(--font-geist-sans);}Cliente (Navegador)Frontend (React/TypeScript)API RESTful (Laravel)Base de Datos (MySQL)Vite (Bundler)Servicios LaravelAutenticaciónGestión de BicicletasGestión de ServiciosChatGestión de Stock
-```
-
-## Tecnologías Utilizadas
-
-### Backend
-
-- **[Laravel](https://laravel.com/)** - Framework PHP para el desarrollo de la API RESTful
-- **[MySQL](https://www.mysql.com/)** - Sistema de gestión de bases de datos
-
-
-### Frontend
-
-- **[React](https://react.dev/)** - Biblioteca JavaScript para la interfaz de usuario
-- **[TypeScript](https://www.typescriptlang.org/)** - Superset de JavaScript con tipado estático
-- **[React Router DOM](https://reactrouter.com/)** - Enrutamiento para aplicaciones React
-
-
-### Estilos y Herramientas
-
-- **[Tailwind CSS](https://tailwindcss.com/)** - Framework CSS utility-first
-- **[Vite](https://vitejs.dev/)** - Herramienta de compilación y servidor de desarrollo
-
-
-### Entorno de Desarrollo
-
-- **Apache** - Servidor web local (macOS)
-- **Composer** - Gestor de dependencias para PHP
-- **npm** - Gestor de paquetes para Node.js
-- **Git/GitHub** - Control de versiones
-
-
-## Requisitos del Sistema
-
-Para ejecutar este proyecto localmente, necesitarás:
-
-- **PHP** >= 8.1
-- **Node.js** >= 16
-- **Composer**
-- **npm** (o Yarn)
-- **MySQL** (o un gestor de bases de datos compatible)
-- **Servidor web** (Apache o Nginx)
-
-
-## Instalación y Configuración Local
+Sigue estos pasos para poner en marcha el proyecto en tu máquina local:
 
 ### 1. Clonar el Repositorio
 
-```shellscript
-git clone https://github.com/Isra-Vila/Final-Degree-Project-DAW.git
-cd Final-Degree-Project-DAW
-```
+```bash
+git clone [URL_DE_TU_REPOSITORIO_GITHUB]
+cd Tripasion # O el nombre de tu carpeta raíz del proyecto
+2. Configuración del Backend (Laravel)
+Instalar Dependencias de Composer:
 
-### 2. Configuración del Backend (Laravel)
+Bash
 
-#### Instalar Dependencias de Composer
-
-```shellscript
 composer install
-```
+Crear Archivo de Entorno:
+Copia el archivo de ejemplo .env.example a .env:
 
-#### Crear Archivo de Entorno
+Bash
 
-```shellscript
 cp .env.example .env
-```
+Generar Clave de Aplicación:
 
-#### Generar Clave de Aplicación
+Bash
 
-```shellscript
 php artisan key:generate
-```
+Configurar la Base de Datos:
+Abre el archivo .env y configura tus credenciales de la base de datos MySQL. Asegúrate de tener una base de datos creada previamente en tu servidor MySQL con el nombre que especifiques aquí.
 
-#### Configurar la Base de Datos
+Fragmento de código
 
-Edita el archivo `.env` con tus credenciales de MySQL:
-
-```plaintext
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=tripasion
-DB_USERNAME=tu_usuario
-DB_PASSWORD=tu_contraseña
-```
+DB_DATABASE=[TU_NOMBRE_DE_BASE_DE_DATOS]
+DB_USERNAME=[TU_USUARIO_DE_MYSQL]
+DB_PASSWORD=[TU_CONTRASEÑA_DE_MYSQL]
+También, asegúrate de que APP_URL apunte a tu dominio local donde Apache esté sirviendo la aplicación Laravel:
 
-#### Ejecutar Migraciones y Seeders
+Fragmento de código
 
-```shellscript
+APP_URL=http://localhost:8000 # O la URL de tu servidor Apache, si usas un Virtual Host
+Si usas CORS para tu API (lo cual es común en configuraciones de frontend/backend separados, incluso en desarrollo), asegúrate de que tu dominio frontend esté permitido en config/cors.php:
+
+PHP
+
+// config/cors.php
+// ...
+'allowed_origins' => ['http://localhost:5173'], // O el puerto de Vite si es diferente
+// ...
+Ejecutar Migraciones y Seeders (Opcional, para datos de prueba):
+
+Bash
+
 php artisan migrate
-php artisan db:seed  # Solo si tienes seeders configurados
-```
+php artisan db:seed # Ejecutar si tienes seeders para poblar la base de datos con datos de prueba
+Configurar el Servidor Web (Apache/Nginx):
+Asegúrate de que tu servidor web (Apache en tu caso) esté configurado para apuntar a la carpeta public de tu proyecto Laravel. Esto es crucial para que el servidor web sepa dónde encontrar los archivos de tu aplicación. Para Apache en macOS, esto a menudo implica configurar un Virtual Host en httpd-vhosts.conf o similar.
 
-### 3. Configuración del Frontend (React/Vite)
+3. Configuración del Frontend (React/Vite)
+Instalar Dependencias de NPM:
 
-#### Instalar Dependencias de NPM
+Bash
 
-```shellscript
 npm install
-```
+Configurar Variables de Entorno de Frontend (si las usas):
+Si tu frontend usa variables de entorno (ej. VITE_API_URL para la URL de tu API), asegúrate de que estén configuradas en un archivo .env en la raíz de tu proyecto Laravel (donde también está tu .env principal). Vite las leerá desde allí si no hay un .env.local específico para el frontend. Por ejemplo:
 
-#### Configurar Variables de Entorno del Frontend
+Fragmento de código
 
-Asegúrate de que tu archivo `.env` incluya las variables necesarias para el frontend:
+# En el archivo .env en la raíz de tu proyecto Laravel
+VITE_API_URL=http://localhost:8000/api # Asegúrate de que coincida con la URL de tu API de Laravel
+Asegúrate de que tu vite.config.js apunte a la carpeta public/build de Laravel para la salida de los assets compilados, lo cual ya deberías tener configurado.
 
-```plaintext
-VITE_API_URL=http://localhost:8000/api
-```
+4. Ejecutar el Proyecto
+Para ejecutar la aplicación en modo de desarrollo, necesitarás dos terminales: una para el backend de Laravel y otra para el servidor de desarrollo de Vite (frontend).
 
-### 4. Ejecutar el Proyecto
+Terminal 1: Iniciar el Servidor de Desarrollo de Laravel
 
-#### Terminal 1: Iniciar el Servidor de Laravel
+Bash
 
-```shellscript
 php artisan serve
-```
+Esto iniciará el servidor de desarrollo de Laravel, generalmente en http://localhost:8000. Este es el servidor al que tu API de React hará las peticiones.
 
-#### Terminal 2: Iniciar el Servidor de Desarrollo de Vite
+Terminal 2: Iniciar el Servidor de Desarrollo de Vite (Frontend)
 
-```shellscript
+Bash
+
 npm run dev
-```
+Esto iniciará el servidor de desarrollo de Vite, que compila y sirve tu aplicación React. Generalmente se inicia en http://localhost:5173. Vite se encargará de que los cambios en tu frontend se recarguen automáticamente en el navegador.
 
-Ahora puedes acceder a la aplicación en tu navegador:
+Ahora puedes acceder a tu aplicación en tu navegador visitando la URL que te proporcione Vite (normalmente http://localhost:5173). Laravel servirá el frontend a través de la directiva @vite en tus vistas Blade.
 
-- Frontend: [http://localhost:5173](http://localhost:5173) (o la URL que te indique Vite)
-- API: [http://localhost:8000/api](http://localhost:8000/api)
+📦 Compilar para Producción
+Cuando estés listo para desplegar la aplicación, deberás compilar los assets de frontend. Es crucial que hagas esto antes de subir tu código a un servidor de producción (como Railway).
 
+Bash
 
-## Compilar para Producción
-
-Cuando estés listo para desplegar la aplicación:
-
-```shellscript
 npm run build
-```
+Este comando generará los archivos optimizados (CSS, JavaScript) de tu aplicación React/Vite en la carpeta public/build de tu proyecto Laravel. Estos son los archivos estáticos que tu servidor web (Apache/Nginx) servirá en un entorno de producción.
 
-Luego, limpia las cachés de Laravel:
+Después de compilar, es una buena práctica limpiar las cachés de Laravel para asegurar que se usen las últimas versiones de configuración, rutas, etc.:
 
-```shellscript
+Bash
+
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
-```
+🌍 Despliegue en Railway (Ejemplo)
+Para desplegar esta aplicación en Railway, se recomienda seguir su guía de despliegue de Laravel y Node.js.
 
-## Despliegue
+Asegúrate de configurar las siguientes variables de entorno en el panel de Railway (en la sección "Variables" o "Environment Variables" de tu servicio):
 
-### Despliegue en Railway
+APP_URL: La URL pública de tu aplicación desplegada en Railway (ej. https://tu-proyecto.up.railway.app).
+DB_CONNECTION: mysql
+DB_HOST: [Host de tu base de datos de Railway]
+DB_PORT: [Puerto de tu base de datos de Railway]
+DB_DATABASE: [Nombre de tu base de datos de Railway]
+DB_USERNAME: [Usuario de tu base de datos de Railway]
+DB_PASSWORD: [Contraseña de tu base de datos de Railway]
+VITE_API_URL: La URL de tu API en Railway (ej. https://tu-proyecto.up.railway.app/api). Es crucial que esta URL apunte al endpoint correcto en tu aplicación desplegada.
+APP_KEY: La clave de cifrado de tu aplicación Laravel. Puedes generarla con php artisan key:generate localmente y luego copiar el valor que aparece en tu .env a las variables de entorno de Railway.
+Railway debería detectar automáticamente tus scripts de build y start definidos en package.json y Composer. Si no lo hace, puedes configurarlos manualmente en las opciones de tu servicio en Railway.
 
-Para desplegar esta aplicación en Railway, configura las siguientes variables de entorno:
+🤝 Contribución
+Si deseas contribuir a este proyecto, por favor, ponte en contacto con [Tu Nombre/Contacto] para discutir los detalles.
 
-- `APP_URL`: URL pública de tu aplicación
-- `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`: Credenciales de la base de datos
-- `VITE_API_URL`: URL de tu API
-- `APP_KEY`: Clave de cifrado de Laravel
-
-
-Railway debería detectar automáticamente tus scripts de build y start definidos en `package.json` y Composer.
-
-## Documentación API
-
-La API RESTful de Web Tripasión proporciona los siguientes endpoints principales:
-
-### Autenticación
-
-| Método | Endpoint | Descripción
-|-----|-----|-----
-| POST | `/api/auth/login` | Iniciar sesión
-| POST | `/api/auth/register` | Registrar nuevo usuario
-| POST | `/api/auth/logout` | Cerrar sesión
-| GET | `/api/auth/user` | Obtener usuario actual
-
-
-### Bicicletas
-
-| Método | Endpoint | Descripción
-|-----|-----|-----
-| GET | `/api/bikes` | Listar bicicletas del usuario
-| GET | `/api/bikes/{id}` | Obtener detalles de una bicicleta
-| POST | `/api/bikes` | Registrar nueva bicicleta
-| PUT | `/api/bikes/{id}` | Actualizar información de bicicleta
-| DELETE | `/api/bikes/{id}` | Eliminar bicicleta
-
-
-### Servicios
-
-| Método | Endpoint | Descripción
-|-----|-----|-----
-| GET | `/api/services` | Listar servicios
-| GET | `/api/services/{
+📜 Licencia
+Este proyecto está bajo la Licencia [Nombre de la Licencia, ej. MIT License]. Consulta el archivo LICENSE para más detalles.
