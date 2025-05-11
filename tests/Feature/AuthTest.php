@@ -9,10 +9,10 @@ use App\Models\User;
 
 class AuthTest extends TestCase
 {
-    use RefreshDatabase; // Limpia la base de datos antes de cada prueba
+    use RefreshDatabase; 
 
     /**
-     * Prueba que un usuario puede registrarse exitosamente como cliente.
+     * Prueba que un usuario puede registrarse como cliente con credenciales válidas.
      * @return void
      */
     public function test_user_can_register_as_cliente_with_valid_credentials()
@@ -24,12 +24,12 @@ class AuthTest extends TestCase
             'password_confirmation' => 'passwordSegura123',
         ]);
 
-        $response->assertStatus(201) // HTTP 201 Created
+        $response->assertStatus(201) 
                  ->assertJsonStructure(['user', 'token'])
                  ->assertJson([
                      'user' => [
                          'email' => 'nuevo.cliente@example.com',
-                         'role' => 'cliente', // Verificar que el rol por defecto es 'cliente'
+                         'role' => 'cliente', 
                      ]
                  ]);
 
@@ -55,7 +55,7 @@ class AuthTest extends TestCase
             'password_confirmation' => 'passwordSegura123',
         ]);
 
-        $response->assertStatus(422) // HTTP 422 Unprocessable Entity (errores de validación)
+        $response->assertStatus(422) 
                  ->assertJsonValidationErrors(['email']);
     }
 
@@ -76,10 +76,10 @@ class AuthTest extends TestCase
             'password' => 'passwordCorrecta',
         ]);
 
-        $response->assertStatus(200) // HTTP 200 OK
+        $response->assertStatus(200) 
                  ->assertJsonStructure(['user', 'token']);
 
-        $this->assertAuthenticatedAs($user); // Verifica que el usuario está autenticado
+        $this->assertAuthenticatedAs($user); 
     }
 
     /**
@@ -98,7 +98,7 @@ class AuthTest extends TestCase
             'password' => 'incorrect_password',
         ]);
 
-        $response->assertStatus(401) // HTTP 401 Unauthorized
+        $response->assertStatus(401) 
                  ->assertJson(['message' => 'Credenciales inválidas']);
     }
 }

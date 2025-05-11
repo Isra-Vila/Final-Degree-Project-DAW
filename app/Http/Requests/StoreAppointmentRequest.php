@@ -10,20 +10,14 @@ use Illuminate\Validation\Rule;
 
 class StoreAppointmentRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    
     public function authorize(): bool
     {
         $user = Auth::user();
         return $user->hasRole('admin') || $user->hasRole('client');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    
     public function rules(): array
     {
         $rules = [
@@ -42,7 +36,6 @@ class StoreAppointmentRequest extends FormRequest
             'type' => ['required', Rule::in(['reparacion', 'mantenimiento'])],
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            // MODIFICACIÓN CLAVE AQUÍ: Define start_time y end_time como arrays desde el principio
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date', 'after:start_time'],
             'status' => [
@@ -60,16 +53,14 @@ class StoreAppointmentRequest extends FormRequest
             $rules['client_id'] = 'required|exists:users,id';
         }
 
-        // Ya no necesitas la comprobación is_array porque ya son arrays.
+        
 
-        // Validación de disponibilidad del mecánico
+        //Validación de disponibilidad del mecánico
         $rules['start_time'][] = function ($attribute, $value, $fail) {
             $mechanicId = $this->input('mechanic_id');
             $endTimeInput = $this->input('end_time');
 
             if (!$mechanicId || !$value || !$endTimeInput) {
-                // Esto debería ser manejado por las reglas 'required' de arriba,
-                // pero se mantiene como una salvaguarda.
                 $fail("No se proporcionaron todos los datos necesarios para la verificación de disponibilidad.");
                 return;
             }
@@ -82,7 +73,7 @@ class StoreAppointmentRequest extends FormRequest
                 return;
             }
 
-            // Aquí está la lógica de solapamiento
+            
             $overlappingAppointments = Appointment::where('mechanic_id', $mechanicId)
                 ->where(function ($query) use ($startTime, $endTime) {
                     $query->where(function ($query) use ($startTime, $endTime) {
@@ -90,10 +81,6 @@ class StoreAppointmentRequest extends FormRequest
                               ->where('end_time', '>', $startTime);
                     });
                 })
-                // Excluir la propia cita si se está editando (no aplicable si es una nueva cita)
-                // ->when($this->route('appointment'), function ($query, $appointment) {
-                //     return $query->where('id', '!=', $appointment->id);
-                // })
                 ->count();
 
             if ($overlappingAppointments > 0) {
@@ -104,9 +91,6 @@ class StoreAppointmentRequest extends FormRequest
         return $rules;
     }
 
-    /**
-     * Prepare the data for validation.
-     */
     protected function prepareForValidation(): void
     {
         $user = Auth::user();

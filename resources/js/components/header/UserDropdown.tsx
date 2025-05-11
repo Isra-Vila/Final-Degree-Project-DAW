@@ -5,7 +5,7 @@ interface UserDropdownProps {
   showUserDropdown: boolean;
   userDropdownRef: React.RefObject<HTMLDivElement | null>;
   isLoggedIn: boolean;
-  userRole: string | null; // ⭐ Prop para el rol del usuario
+  userRole: string | null; 
   handleLogout: () => void;
   setShowUserDropdown: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -14,7 +14,7 @@ export default function UserDropdown({
   showUserDropdown,
   userDropdownRef,
   isLoggedIn,
-  userRole, // Usa el prop
+  userRole, 
   handleLogout,
   setShowUserDropdown,
 }: UserDropdownProps) {
@@ -31,7 +31,7 @@ export default function UserDropdown({
     >
       {isLoggedIn ? (
         userRole === 'client' ? (
-          // Opciones para el usuario cliente
+          
           <>
             <Link to="/client/profile" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Perfil
@@ -47,7 +47,7 @@ export default function UserDropdown({
             </button>
           </>
         ) : userRole === 'mechanic' ? (
-          // Opciones para el usuario mecánico
+        
           <>
             <Link to="/mechanic/profile" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Ficha de Empleado
@@ -60,7 +60,7 @@ export default function UserDropdown({
             </button>
           </>
         ) : userRole === 'admin' ? (
-          // Opciones para el administrador
+          
           <>
             <Link to="/admin/users" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
               Gestión de Usuarios
@@ -75,9 +75,9 @@ export default function UserDropdown({
               Cerrar Sesión
             </button>
           </>
-        ) : null // No renderizar nada si el rol no es ninguno de los especificados y está loggeado
+        ) : null 
       ) : (
-        // Opciones cuando no está loggeado
+        
         <>
           <Link to="/login" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={handleLinkClick}>
             Iniciar Sesión

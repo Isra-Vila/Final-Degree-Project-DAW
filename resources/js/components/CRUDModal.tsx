@@ -9,15 +9,15 @@ interface CRUDModalProps {
   onSecondary?: () => void;
   secondaryText?: string;
   modalType: 'create' | 'edit' | 'view' | 'delete' | null;
-  className?: string; // Para permitir clases adicionales desde el padre
+  className?: string; 
 }
 
 const CRUDModal: React.FC<CRUDModalProps> = ({ title, children, onClose, onConfirm, confirmText, onSecondary, secondaryText, modalType, className }) => {
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-start pt-10 z-50"> {/* items-start y pt-10 añadido */}
-      <div className={`bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl ${className || ''}`}> {/* Permite className */}
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-start pt-10 z-50"> 
+      <div className={`bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl ${className || ''}`}>
         <h2 className="text-xl font-bold mb-4">{title}</h2>
-        <div className="overflow-y-auto max-h-[calc(100vh - 150px)]">{children}</div> {/* Reducido el espacio restado */}
+        <div className="overflow-y-auto max-h-[calc(100vh - 150px)]">{children}</div> 
         <div className="flex justify-end space-x-2 mt-4">
           <button
             type="button"

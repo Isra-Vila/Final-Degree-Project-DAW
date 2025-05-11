@@ -10,7 +10,7 @@ import ContactPage from './pages/ContactPage';
 import ClientWorkshopPage from './pages/workshop/ClientWorkshopPage';
 import ClientDatePage from './pages/workshop/ClientDatePage';
 import MechanicDatePage from './pages/workshop/MechanicDatePage';
-import ClientBikeBuildingPage from './pages/client/ClientBikeBuildingPage'; // Importa el nuevo componente
+import ClientBikeBuildingPage from './pages/client/ClientBikeBuildingPage'; 
 
 const ShopPage = lazy(() => import('./pages/ShopPage'));
 const ClientProfilePage = lazy(() => import('./pages/client/ClientProfilePage'));
@@ -32,13 +32,12 @@ interface AppRoutesProps {
 const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRole, setIsAuthenticated, setUserRole, user }) => {
   const navigate = useNavigate();
 
-  // Función para redirigir al perfil del usuario (cliente o mecánico)
     const redirectToProfile = () => {
         if (user && user.id) {
             if (userRole === 'client') {
                 navigate(`/client/${user.id}`);
             } else if (userRole === 'mechanic') {
-                navigate(`/mechanic/${user.id}`); // Redirige al perfil del mecánico usando su ID
+                navigate(`/mechanic/${user.id}`); 
             } else {
                 console.error("User role is not defined.");
                 navigate('/');
@@ -49,7 +48,6 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRol
         }
     };
 
-  // Componente para realizar la redirección
   const RedirectToProfile = () => {
     useEffect(() => {
       redirectToProfile();
@@ -70,7 +68,6 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRol
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
 
-        {/* Ruta /workshop: redirige según el rol */}
         <Route
           path="/workshop"
           element={
@@ -81,8 +78,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRol
             </PrivateRoute>
           }
         />
-
-        {/* Rutas del taller para CLIENTES (anidadas bajo /workshop/client) */}
+        
         <Route
           path="/workshop/client/*"
           element={
@@ -92,14 +88,13 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRol
                   <Route index element={<ClientWorkshopPage user={user} />} />
                   <Route path="dates" element={<ClientDatePage />} />
                   <Route path="bike" element={<ClientBikePage />} />
-                  <Route path="build-bike" element={<ClientBikeBuildingPage />} /> {/* Usa el nuevo componente */}
+                  <Route path="build-bike" element={<ClientBikeBuildingPage />} /> 
                 </Routes>
               </Suspense>
             </PrivateRoute>
           }
         />
-
-        {/* Rutas del taller para MECÁNICOS (anidadas bajo /workshop/mechanic) */}
+        
         <Route
           path="/workshop/mechanic/*"
           element={
@@ -112,8 +107,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRol
             </PrivateRoute>
           }
         />
-
-        {/* Rutas de perfil */}
+        
         <Route
             path="/client/profile"
             element={
@@ -144,7 +138,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRol
         />
 
         <Route
-          path="/mechanic/:id"  // Cambiado a una ruta dinámica
+          path="/mechanic/:id"  
           element={
             <PrivateRoute isAuthenticated={isAuthenticated} requiredRole="mechanic" loading={loading} userRole={userRole}>
               <Suspense fallback={<div>Cargando perfil de mecánico...</div>}>
@@ -153,8 +147,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated, loading, userRol
             </PrivateRoute>
           }
         />
-
-        {/* Rutas protegidas para la administración */}
+        
         <Route
           path="/admin/users"
           element={

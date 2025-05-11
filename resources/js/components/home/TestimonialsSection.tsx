@@ -4,14 +4,14 @@ import { motion } from 'framer-motion';
 const TestimonialsSection: React.FC = () => {
   return (
     <motion.div
-      // Restaurar el ancho que te gustaba y reducir drásticamente el padding vertical (py)
-      className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto px-4 py-6" // ⭐ Ajustado py-6 (antes era py-10/12)
+      
+      className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto px-4 py-6" 
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.3 }}
       viewport={{ once: true, amount: 0.5 }}
     >
-      <h2 className="text-3xl font-extrabold mb-4 text-[#F62364] leading-tight"> {/* ⭐ Reducido mb-6 a mb-4 */}
+      <h2 className="text-3xl font-extrabold mb-4 text-[#F62364] leading-tight"> 
         La voz de nuestros ciclistas
       </h2>
       <blockquote className="text-xl sm:text-2xl font-medium text-gray-800 leading-relaxed italic mb-4">

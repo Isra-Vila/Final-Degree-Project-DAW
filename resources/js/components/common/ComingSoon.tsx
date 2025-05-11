@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const ComingSoon: React.FC = () => {
-  const imageUrl = "/images/engranajes.gif"; // Ruta de la imagen del GIF
+  const imageUrl = "/images/engranajes.gif"; 
 
   return (
     <motion.section
@@ -25,7 +25,6 @@ const ComingSoon: React.FC = () => {
           Disculpa las molestias. Estamos esforzándonos para que la espera valga la pena.
         </p>
         
-        {/* Imagen GIF de engranajes */}
         <div className="mt-12 flex justify-center">
           <img
             src={imageUrl}
@@ -34,7 +33,6 @@ const ComingSoon: React.FC = () => {
           />
         </div>
 
-        {/* Opcional: Puedes añadir un enlace para volver a la home o a otra sección */}
         <a href="/" className="mt-12 inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition duration-300">
           Volver a Inicio
         </a> 

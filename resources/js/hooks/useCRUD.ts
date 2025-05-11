@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from '../axiosInstance'; // Asegúrate de la ruta correcta
-import { AxiosError } from 'axios';
+import axios from '../axiosInstance'; 
 
 interface UseCRUDProps<T> {
   apiEndpoint: string;
@@ -26,7 +25,7 @@ interface UseCRUDResult<T> {
   openViewModal: (item: T) => void;
   openDeleteModal: (id: number) => void;
   handleCloseModal: () => void;
-  handleFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void; // Incluimos HTMLTextAreaElement
+  handleFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void; 
   handleCreate: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleUpdate: (e: React.FormEvent<HTMLFormElement>, id: number) => Promise<void>;
   handleDelete: (id: number) => Promise<void>;
@@ -49,7 +48,7 @@ const useCRUD = <T extends { id: number }>({ apiEndpoint, itemsPerPage = 10 }: U
       const response = await axios.get(`${apiEndpoint}?page=${currentPage}&per_page=${itemsPerPage}`);
     
       setData(response.data.data || []);
-      setTotalPages(response.data.last_page || 0); // Leemos last_page directamente
+      setTotalPages(response.data.last_page || 0); 
       setError(null);
     } catch (err: any) {
       setError("Hubo un error al cargar los datos.");
@@ -64,13 +63,13 @@ const useCRUD = <T extends { id: number }>({ apiEndpoint, itemsPerPage = 10 }: U
   }, [fetchData]);
 
   const openCreateModal = useCallback(() => {
-    setFormData({}); // Reinicia el formulario
+    setFormData({}); 
     setModal({ type: 'create' });
     setFormError(null);
   }, []);
 
   const openEditModal = useCallback((item: T) => {
-    setFormData(item); // Inicializa el formulario con los datos del item
+    setFormData(item); 
     setModal({ type: 'edit', data: item });
     setFormError(null);
   }, []);
@@ -89,7 +88,7 @@ const useCRUD = <T extends { id: number }>({ apiEndpoint, itemsPerPage = 10 }: U
     setFormError(null);
   }, []);
 
-  const handleFormChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => { // Incluimos HTMLTextAreaElement
+  const handleFormChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => { 
     const { name, value } = e.target;
     setFormData((prevFormData: any) => ({ ...prevFormData, [name]: value }));
   }, []);

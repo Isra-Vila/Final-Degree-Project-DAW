@@ -6,34 +6,17 @@ import moment from 'moment';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import BikeList from '../../components/bike/BikeList';
-import MechanicsChat from '../../components/MechanicsChat';
 import SelectedBikeDetails from '../../components/bike/SelectedBikeDetails';
 import { Bike } from '../../types/bike';
-import { Appointment } from '../../types/appointment'; // ⭐ Importa la interfaz Appointment unificada
+import { Appointment } from '../../types/appointment'; 
 
 const localizer = momentLocalizer(moment);
-
-// ⭐ ELIMINAR esta interfaz AppointmentType duplicada, ya que la importamos de types/appointment.ts
-/*
-interface AppointmentType {
-  id: number;
-  title: string;
-  start_time: string;
-  end_time: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'failed' | 'canceled';
-  type: 'reparacion' | 'mantenimiento';
-  bike_id: number;
-  client?: { id: number; name: string; email: string; };
-  bike?: Bike;
-  mechanic?: { id: number; name: string; email: string; };
-}
-*/
 
 interface EventType {
   title: string;
   start: Date;
   end: Date;
-  resource?: Appointment; // ⭐ Usar la interfaz Appointment unificada
+  resource?: Appointment; 
 }
 
 interface ConfirmationModalProps {
@@ -98,7 +81,7 @@ const MechanicDatePage: React.FC = () => {
   const [assignedAppointments, setAssignedAppointments] = useState<EventType[]>([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
   const [errorAppointments, setErrorAppointments] = useState<string | null>(null);
-  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null); // ⭐ Usar la interfaz Appointment unificada
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null); 
   const [calendarDate, setCalendarDate] = useState<Date>(new Date());
 
   const [showAlert, setShowAlert] = useState(false);
@@ -141,10 +124,10 @@ const MechanicDatePage: React.FC = () => {
       setLoadingBikes(true);
       setLoadingAppointments(true);
 
-      const appointmentsResponse = await api.get<Appointment[]>('/mechanic/assigned-appointments'); // ⭐ Usar Appointment
+      const appointmentsResponse = await api.get<Appointment[]>('/mechanic/assigned-appointments'); 
       const appointments = appointmentsResponse.data;
 
-      const formattedEvents: EventType[] = appointments.map((appt: Appointment) => ({ // ⭐ Usar Appointment
+      const formattedEvents: EventType[] = appointments.map((appt: Appointment) => ({ 
         title: appt.title,
         start: new Date(appt.start_time),
         end: new Date(appt.end_time),
@@ -156,8 +139,6 @@ const MechanicDatePage: React.FC = () => {
       const bikeIds = Array.from(new Set(appointments.map(appt => appt.bike_id)));
 
       if (bikeIds.length > 0) {
-        // No necesitas filtrar aquí si el backend ya te devuelve las bicis correctas
-        // Solo asegúrate de que tu endpoint /mechanic/assigned-bikes devuelve lo que esperas.
         const bikesResponse = await api.get<Bike[]>('/mechanic/assigned-bikes');
         setAssignedBikes(bikesResponse.data);
         setErrorBikes(null);
@@ -180,7 +161,7 @@ const MechanicDatePage: React.FC = () => {
     fetchAssignedBikesAndAppointments();
   }, [fetchAssignedBikesAndAppointments]);
 
-  const handleSelectBike = useCallback((bike: Bike, appointment?: Appointment | null) => { // ⭐ Usar Appointment
+  const handleSelectBike = useCallback((bike: Bike, appointment?: Appointment | null) => { 
     setSelectedBike(bike);
     if (!appointment) {
         setSelectedAppointment(null);
@@ -306,7 +287,6 @@ const MechanicDatePage: React.FC = () => {
             views={['month']}
             eventPropGetter={(event) => {
               let className = 'rbc-event-custom';
-              // ⭐ 'event.resource' ahora es de tipo 'Appointment' unificada
               if (event.resource?.status === 'confirmed') {
                 className += ' rbc-event-confirmed';
               } else if (event.resource?.status === 'pending') {
@@ -420,13 +400,14 @@ const MechanicDatePage: React.FC = () => {
             <h3 className="text-sm font-semibold mb-2 text-gray-700"><svg className="w-4 h-4 mr-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0-6l-3 3m7 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Detalles de la Máquina</h3>
             <SelectedBikeDetails
               bike={selectedBike}
-              selectedAppointment={selectedAppointment} // ⭐ Ahora ambos esperan Appointment
+              selectedAppointment={selectedAppointment} 
               onDelete={async (id) => {
                 displayAlert("No puedes eliminar máquinas desde esta vista.", "info");
               }}
               onEdit={async (bike) => {
                 displayAlert("No puedes editar máquinas desde esta vista.", "info");
               }}
+              hideActionsForMechanic={true}
             />
           </div>
           <div className="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-600 text-center">

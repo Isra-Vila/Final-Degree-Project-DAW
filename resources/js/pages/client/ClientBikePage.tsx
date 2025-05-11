@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../axiosInstance';
 import { Bike } from '../../types/bike';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const ClientBikePage: React.FC = () => {
     const [bikes, setBikes] = useState<Bike[]>([]);
@@ -15,7 +15,6 @@ const ClientBikePage: React.FC = () => {
             setLoading(true);
             setError(null);
             try {
-                // Fetch all bikes for the client
                 const response = await api.get<Bike[]>('/client/bikes');
                 setBikes(response.data);
             } catch (err: any) {
@@ -43,13 +42,12 @@ const ClientBikePage: React.FC = () => {
     };
 
     const handleBikeClick = async (bike: Bike) => {
-      setLoading(true); // Set loading to true before fetching details
+      setLoading(true); 
         try {
-            // Fetch the bike details with appointments.  Adjust the endpoint as necessary for your API.
-            const response = await api.get<Bike>(`/client/bikes/${bike.id}`); //  <- Ajusta esto
+            const response = await api.get<Bike>(`/client/bikes/${bike.id}`); 
             setSelectedBike(response.data);
         } catch (error: any) {
-            setError("No se pudieron cargar los detalles de la bicicleta"); //Set error message
+            setError("No se pudieron cargar los detalles de la bicicleta"); 
             console.error("Error fetching bike details", error);
         } finally {
           setLoading(false);
@@ -98,7 +96,7 @@ const ClientBikePage: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="bg-white shadow-md rounded-lg p-6 border-l-4 border-[#F62364]"
         >
-          <button  //REPLACED - Was causing errors
+          <button  
             onClick={handleBackToList}
             className="mb-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
@@ -176,7 +174,6 @@ const ClientBikePage: React.FC = () => {
                     ID: {appointment.id}, Título: {appointment.title}, Inicio:{' '}
                     {appointment.start_time}, Fin: {appointment.end_time}
                   </p>
-                  {/* Aquí puedes mostrar más detalles de la cita */}
                 </li>
               ))}
             </ul>
@@ -206,10 +203,9 @@ const ClientBikePage: React.FC = () => {
                   >
                     <h2 className="text-xl font-semibold mb-2">{bike.brand} {bike.model}</h2>
                     <p className="text-gray-700">ID: {bike.id}</p>
-                     <p className="text-gray-700">Tipo: {bike.type}</p>
+                    <p className="text-gray-700">Tipo: {bike.type}</p>
                     {bike.year && <p className="text-gray-700">Año: {bike.year}</p>}
                     {bike.frame && <p className="text-gray-700">Cuadro: {bike.frame}</p>}
-                    {/* Agrega aquí un resumen de los detalles de la bicicleta para mostrar en la lista */}
                   </motion.div>
                 ))}
             </motion.div>

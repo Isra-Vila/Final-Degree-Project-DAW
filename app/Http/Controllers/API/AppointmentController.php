@@ -111,12 +111,6 @@ class AppointmentController extends Controller
         return response()->json(null, 204);
     }
 
-    /**
-     * Get the unavailable dates for a specific mechanic.
-     *
-     * @param  int  $mechanicId
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function getUnavailableDatesForMechanic(int $mechanicId): JsonResponse
     {
         $unavailableDates = Appointment::where('mechanic_id', $mechanicId)
@@ -130,12 +124,6 @@ class AppointmentController extends Controller
         return response()->json($unavailableDates);
     }
 
-    /**
-     * Get appointments assigned to the authenticated mechanic.
-     * This method ensures client and bike relations are eager loaded.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function assignedAppointments(): JsonResponse
     {
         $mechanic = Auth::user();

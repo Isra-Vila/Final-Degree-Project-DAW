@@ -4,7 +4,7 @@ import { Bike } from '../../types/bike';
 interface BikeFormProps {
   formData: Partial<Bike>;
   onFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
-  onCreateBike: () => void;
+  onCreateBike: (e: React.FormEvent<HTMLFormElement>) => Promise<void> | void; 
   onCancel: () => void;
   isEditMode: boolean;
   formError: string | null;
@@ -41,7 +41,10 @@ const BikeForm: React.FC<BikeFormProps> = ({ formData, onFormChange, isEditMode,
         {isEditMode ? 'Editar Bicicleta' : 'Dar de Alta Nueva Bicicleta'}
       </h3>
 
-      <form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <form className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            onSubmit={onCreateBike} 
+            id={isEditMode ? "editBikeForm" : "createBikeForm"} 
+      >
         {formError && (
           <div className="col-span-2 text-red-500 mb-4">{formError}</div>
         )}
@@ -50,7 +53,7 @@ const BikeForm: React.FC<BikeFormProps> = ({ formData, onFormChange, isEditMode,
           if (hideClientMechanicIds && (id === 'owner_id' || id === 'mechanic_id')) {
             return null;
           }
-          const value = formData[id as keyof Bike] as string | number | undefined; // Type assertion
+          const value = formData[id as keyof Bike] as string | number | undefined; 
           return (
             <div key={id}>
               <label htmlFor={id} className={labelClasses}>
@@ -68,24 +71,24 @@ const BikeForm: React.FC<BikeFormProps> = ({ formData, onFormChange, isEditMode,
             </div>
           );
         })}
+        
+        <div className="col-span-2 flex justify-end gap-4 mt-6">
+            <button
+                type="button" 
+                onClick={onCancel}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-full focus:outline-none focus:ring-gray-300 transition duration-300"
+            >
+                Cancelar
+            </button>
+            <button
+                type="submit"
+                className="bg-[#F62364] hover:bg-[#D91E5B] text-white font-semibold py-3 px-6 rounded-full focus:outline-none focus:ring-[#F62364] shadow-md transition duration-300"
+            >
+                {isEditMode ? 'Guardar Cambios' : 'Crear Bicicleta'}
+            </button>
+        </div>
       </form>
 
-      <div className="flex justify-end gap-4 mt-6">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-full focus:outline-none focus:ring-gray-300 transition duration-300"
-        >
-          Cancelar
-        </button>
-        <button
-          type="button"
-          onClick={onCreateBike}
-          className="bg-[#F62364] hover:bg-[#D91E5B] text-white font-semibold py-3 px-6 rounded-full focus:outline-none focus:ring-[#F62364] shadow-md transition duration-300"
-        >
-          {isEditMode ? 'Guardar Cambios' : 'Crear Bicicleta'}
-        </button>
-      </div>
     </div>
   );
 };

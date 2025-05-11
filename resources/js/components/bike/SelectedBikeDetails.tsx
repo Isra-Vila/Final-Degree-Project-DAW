@@ -4,24 +4,17 @@ import React, { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { Bike } from '../../types/bike';
-import { Appointment } from '../../types/appointment'; // ⭐ Importa la interfaz Appointment unificada
-import { User } from '../../types/user'; // Para ClientType y MechanicType si los usas así
-
-// Si ClientType y MechanicType son simplemente alias para User, puedes eliminarlas y usar User directamente.
-// O si tienen propiedades adicionales o un subconjunto diferente, entonces mantenlas.
-// Por simplicidad, si no hay propiedades adicionales, puedes usar 'User' directamente.
-interface ClientType extends User {}
-interface MechanicType extends User {}
-
+import { Appointment } from '../../types/appointment'; 
 
 interface SelectedBikeDetailsProps {
   bike: Bike | null;
-  selectedAppointment?: Appointment | null; // ⭐ Usa la interfaz Appointment unificada
+  selectedAppointment?: Appointment | null; 
   onDelete: (id: number) => Promise<void>;
   onEdit: (bike: Bike) => void;
+  hideActionsForMechanic?: boolean;  
 }
 
-const SelectedBikeDetails: React.FC<SelectedBikeDetailsProps> = memo(({ bike, selectedAppointment, onDelete, onEdit }) => {
+const SelectedBikeDetails: React.FC<SelectedBikeDetailsProps> = memo(({ bike, selectedAppointment, onDelete, onEdit, hideActionsForMechanic }) => { 
   const navigate = useNavigate();
   const [showCustomAlert, setShowCustomAlert] = useState(false);
 
@@ -129,7 +122,7 @@ const SelectedBikeDetails: React.FC<SelectedBikeDetailsProps> = memo(({ bike, se
           <p className="text-sm text-gray-700">
             <strong>Hasta:</strong> {moment(selectedAppointment.end_time).format('DD/MM/YYYY HH:mm')}
           </p>
-          {/* Asegúrate de que client y mechanic sean compatibles con User si estás usando User para ellos */}
+          
           {selectedAppointment.client && (
             <p className="text-sm text-gray-700">
               <strong>Cliente:</strong> {selectedAppointment.client.name} ({selectedAppointment.client.email})
@@ -149,7 +142,7 @@ const SelectedBikeDetails: React.FC<SelectedBikeDetailsProps> = memo(({ bike, se
           <ul className="mt-2 space-y-1 max-h-40 overflow-y-auto custom-scrollbar">
             {bike.appointments
               .sort((a, b) => moment(b.start_time).valueOf() - moment(a.start_time).valueOf())
-              .map((appointment: Appointment) => ( // ⭐ Ahora usa la interfaz Appointment unificada
+              .map((appointment: Appointment) => ( 
               <li key={appointment.id} className="text-sm text-gray-600 border-b border-gray-100 pb-1 mb-1 last:border-b-0 last:pb-0 last:mb-0">
                 <span className="font-semibold">{appointment.type === 'reparacion' ? 'Reparación' : 'Mantenimiento'}</span> el {moment(appointment.start_time).format('DD/MM/YYYY')} con {appointment.mechanic?.name || 'Mecánico no asignado'}:
                 <span className={`ml-1 px-2 py-0.5 rounded-full text-xs font-semibold ${getStateClassName(appointment.status)}`}>
@@ -161,7 +154,7 @@ const SelectedBikeDetails: React.FC<SelectedBikeDetailsProps> = memo(({ bike, se
         </div>
       )}
 
-      {!isInRepairOrMaintenance && (
+      {!hideActionsForMechanic && !isInRepairOrMaintenance && ( 
         <div className="mt-6 flex justify-center gap-4">
           <button
             className="bg-yellow-500 text-white py-3 px-6 rounded-full hover:bg-yellow-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-md"

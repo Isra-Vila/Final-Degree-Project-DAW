@@ -1,8 +1,7 @@
 import React from 'react';
 import useCRUD from '../../hooks/useCRUD';
 import DataTable from '../../components/DataTable';
-import CRUDModal from '../../components/CRUDModal';
-import UserForm from '../../components/forms/UserForm'; // Importación correcta de UserForm
+import UserForm from '../../components/forms/UserForm'; 
 import { User } from '../../types/user';
 
 
@@ -158,7 +157,7 @@ const UserManagementPage: React.FC = () => {
               </>
             )}
 
-            {modal.type === 'delete' && modal.data !== undefined && ( // Asegúrate de que modal.data no sea undefined
+            {modal.type === 'delete' && modal.data !== undefined && ( 
               <>
                 <h2 className="text-xl font-bold mb-4">Confirmar Eliminación</h2>
                 <p>&iquest;Est&aacute;s seguro de que deseas eliminar a este usuario?</p>

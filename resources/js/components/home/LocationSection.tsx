@@ -2,13 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const LocationSection: React.FC = () => {
-  // URL correcta del mapa proporcionada por el usuario
+  
   const googleMapsEmbedSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d361.97603984138885!2d-13.667265251798737!3d28.920864040622337!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc462596eebae857%3A0xb6327fe6861772d6!2sTripasion!5e0!3m2!1ses!2slu!4v1746812368950!5m2!1ses!2slu";
 
   return (
     <motion.div
-      // Contenedor principal: padding vertical ajustado, sin px-0 para dar un poco de margen al diseño, centrado.
-      className="w-full mx-auto py-16 flex flex-col items-center overflow-hidden bg-white sm:px-6 lg:px-8" // Fondo blanco, padding general
+      
+      className="w-full mx-auto py-16 flex flex-col items-center overflow-hidden bg-white sm:px-6 lg:px-8" 
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
@@ -18,9 +18,9 @@ const LocationSection: React.FC = () => {
         ¡Tu próximo punto de partida!
       </h2>
 
-      {/* Contenedor del mapa con un ancho controlado, centrado y con un diseño más limpio */}
+      
       <div
-        className="relative w-full max-w-5xl h-[400px] sm:h-[480px] md:h-[550px] lg:h-[650px] mx-auto shadow-2xl rounded-xl overflow-hidden transition-all duration-500 ease-in-out transform hover:scale-[1.02] border-2 border-gray-200" // Diseño más moderno
+        className="relative w-full max-w-5xl h-[400px] sm:h-[480px] md:h-[550px] lg:h-[650px] mx-auto shadow-2xl rounded-xl overflow-hidden transition-all duration-500 ease-in-out transform hover:scale-[1.02] border-2 border-gray-200" 
       >
         <iframe
           title="Tripasión Location"
@@ -31,7 +31,7 @@ const LocationSection: React.FC = () => {
           allowFullScreen
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          className="absolute inset-0 w-full h-full filter grayscale-0 hover:grayscale-0 transition-all duration-500 ease-in-out" // Filtro grayscale para un look más moderno, se quita al hover
+          className="absolute inset-0 w-full h-full filter grayscale-0 hover:grayscale-0 transition-all duration-500 ease-in-out" 
         ></iframe>
       </div>
 
@@ -40,7 +40,6 @@ const LocationSection: React.FC = () => {
         35510, PUERTO DEL CARMEN, TÍAS
       </p>
       
-      {/* Contenedor para centrar el botón */}
       <div className="mt-8 flex justify-center w-full">
         <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
           <a

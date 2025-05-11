@@ -2,18 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface ClientWorkshopPageProps {
-  user: any; // Prop para la información del usuario
+  user: any; 
 }
 
 const ClientWorkshopPage: React.FC<ClientWorkshopPageProps> = ({ user }) => {
   const navigate = useNavigate();
 
   const handleRequestAppointment = () => {
-    navigate('/workshop/client/dates'); // ⭐ ¡Ruta corregida aquí!
+    navigate('/workshop/client/dates'); 
   };
 
   const handleCreateBike = () => {
-    navigate('/workshop/client/build-bike'); // ⭐ ¡Ruta corregida aquí!
+    navigate('/workshop/client/build-bike'); 
   };
 
   return (

@@ -9,19 +9,13 @@ use Illuminate\Validation\Rule;
 
 class StoreBikeRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    
     public function authorize(): bool
     {
         return Auth::check();
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    
     public function rules(): array
     {
         $rules = [
@@ -50,8 +44,8 @@ class StoreBikeRequest extends FormRequest
                     }
                 },
             ],
-            'repair_state' => 'sometimes', // ⭐ 'sometimes' para clientes al crear
-            'maintenance_state' => 'sometimes', // ⭐ 'sometimes' para clientes al crear
+            'repair_state' => 'sometimes', 
+            'maintenance_state' => 'sometimes', 
         ];
 
         if (Auth::check() && Auth::user()->hasRole('admin')) {
@@ -66,7 +60,7 @@ class StoreBikeRequest extends FormRequest
                     }
                 },
             ];
-            // Los administradores pueden establecer el estado al crear
+            
             $rules['repair_state'] = ['nullable', 'string', Rule::in(['reparada', 'en reparacion', 'no reparada'])];
             $rules['maintenance_state'] = ['nullable', 'string', Rule::in(['mantenimiento finalizado', 'en mantenimiento', 'mantenimiento no terminado'])];
         }
@@ -74,11 +68,7 @@ class StoreBikeRequest extends FormRequest
         return $rules;
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array<string, string>
-     */
+    
     public function messages(): array
     {
         return [

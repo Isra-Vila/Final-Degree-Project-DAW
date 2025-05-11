@@ -4,9 +4,9 @@ import { Navigate, useLocation } from "react-router-dom";
 interface PrivateRouteProps {
   children: React.ReactNode;
   isAuthenticated: boolean;
-  requiredRole?: string; // ⭐ Prop opcional para el rol requerido
-  loading: boolean; // ⭐ Nueva prop para indicar si la autenticación está cargando
-  userRole: string | null; // ⭐ Nueva prop para el rol del usuario
+  requiredRole?: string; 
+  loading: boolean; 
+  userRole: string | null;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({
@@ -26,10 +26,9 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // ⭐ Verificar el rol si se proporciona un requiredRole
+  
   if (requiredRole) {
     if (userRole !== requiredRole) {
-      // Redirigir a una página de "acceso denegado" o a la página de inicio
       return <Navigate to="/" replace />;
     }
   }

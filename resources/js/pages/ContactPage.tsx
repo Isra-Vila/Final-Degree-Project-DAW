@@ -2,14 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const ContactPage: React.FC = () => {
-  const contactImage = "/images/contacto_ciclismo.jpg"; // Imagen de fondo o decorativa
+  const contactImage = "/images/contacto_ciclismo.jpg"; 
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2, // Retraso entre la animación de los hijos
+        staggerChildren: 0.2, 
       },
     },
   };
@@ -18,16 +18,10 @@ const ContactPage: React.FC = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
-
-  // Function to handle form submission (prevents default behavior)
+  
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    // You can add logic here to log the form data to the console for testing
-    // console.log("Formulario enviado (a ningún destino):");
-    // console.log("Nombre:", (event.target as any).name.value);
-    // console.log("Correo:", (event.target as any).email.value);
-    // console.log("Mensaje:", (event.target as any).message.value);
-    alert("Mensaje enviado (simulado). Esta funcionalidad está en desarrollo."); // Optional: alert the user
+    event.preventDefault(); 
+    alert("Mensaje enviado (simulado). Esta funcionalidad está en desarrollo."); 
   };
 
   return (
@@ -37,10 +31,9 @@ const ContactPage: React.FC = () => {
       initial="hidden"
       animate="visible"
     >
-      {/* Sección Héroe/Introducción con imagen de fondo */}
       <div
         className="relative w-full h-[40vh] md:h-[50vh] flex items-center justify-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${contactImage})` }} // ⭐ REEMPLAZA CON UNA IMAGEN REAL
+        style={{ backgroundImage: `url(${contactImage})` }} 
       >
         <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
           <motion.h1
@@ -52,16 +45,14 @@ const ContactPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Sección de Contacto Principal: Formulario y Información */}
       <div className="max-w-6xl mx-auto py-16 px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        {/* Formulario de Contacto */}
         <motion.div className="order-2 md:order-1" variants={itemVariants}>
           <h2 className="text-3xl font-bold text-[#F62364] mb-6">Envíanos un Mensaje</h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-6">
             ¿Preguntas sobre alquiler, servicio técnico o simplemente quieres saludar? Rellena el formulario y te responderemos a la mayor brevedad.
           </p>
 
-          <form className="space-y-6" onSubmit={handleSubmit}> {/* Add onSubmit handler */}
+          <form className="space-y-6" onSubmit={handleSubmit}> 
             <div>
               <label htmlFor="name" className="sr-only">Tu nombre</label>
               <input
@@ -90,7 +81,7 @@ const ContactPage: React.FC = () => {
               />
             </div>
             <motion.button
-              type="submit" // Changed type to 'submit' to trigger the onSubmit handler
+              type="submit" 
               className="w-full bg-[#F62364] text-white font-semibold text-lg px-8 py-4 rounded-full shadow-lg hover:bg-[#d81e56] transition-colors duration-300 flex items-center justify-center"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -100,8 +91,7 @@ const ContactPage: React.FC = () => {
             </motion.button>
           </form>
         </motion.div>
-
-        {/* Información de Contacto y Llamada a la Acción */}
+        
         <motion.div className="order-1 md:order-2 bg-gray-50 p-8 rounded-lg shadow-md border-l-4 border-[#F62364] flex flex-col justify-center items-center md:items-start text-center md:text-left h-full" variants={itemVariants}>
           <h3 className="text-3xl font-bold mb-4 text-gray-900">O Contáctanos Directamente</h3>
           <p className="text-lg text-gray-700 mb-6">
@@ -118,11 +108,11 @@ const ContactPage: React.FC = () => {
             </li>
             <li className="flex items-center justify-center md:justify-start">
               <svg className="w-6 h-6 text-[#F62364] mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.32.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.12.35.03.75-.24 1.02l-2.2 2.2z"></path></svg>
-              <span>+34 123 456 789</span> {/* Removed href */}
+              <span>+34 123 456 789</span> 
             </li>
             <li className="flex items-center justify-center md:justify-start">
               <svg className="w-6 h-6 text-[#F62364] mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
-              <span>info@tripasion.com</span> {/* Removed href */}
+              <span>info@tripasion.com</span> 
             </li>
           </ul>
           <motion.button

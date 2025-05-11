@@ -14,7 +14,6 @@ export default function Footer() {
             <img style={{ height: '20px' }} src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" alt="ND icon" className="ml-1" />
           </a>
         </p>
-        {/* Puedes a\u00f1adir m\u00e1s secciones al footer aqu\u00ed, como enlaces \u00fatiles, redes sociales, etc. */}
       </div>
     </footer>
   );

@@ -7,8 +7,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 moment.locale('es');
 
 interface AppointmentFormProps {
-  bikes: any[]; // Considerar tipar mejor 'any'
-  api: any; // Considerar tipar mejor 'any' (ej. AxiosInstance)
+  bikes: any[]; 
+  api: any; 
   onSubmitSuccess: () => void;
   onCancel: () => void;
 }
@@ -37,7 +37,6 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  // Cambiado a Set<string>
   const [unavailableDates, setUnavailableDates] = useState<Set<string>>(new Set());
   const [loadingAvailability, setLoadingAvailability] = useState<boolean>(false);
   const [availabilityError, setAvailabilityError] = useState<string | null>(null);
@@ -68,7 +67,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
     } catch (error) {
       console.error("Error al cargar la disponibilidad del mecánico:", error);
       setAvailabilityError("No se pudo cargar la disponibilidad de este mecánico.");
-      setUnavailableDates(new Set<string>()); // Corrección: Especifica el tipo para el Set vacío
+      setUnavailableDates(new Set<string>()); 
     } finally {
       setLoadingAvailability(false);
     }
@@ -84,8 +83,8 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
 
     if (name === 'mechanic_id' && value) {
       loadMechanicAvailability(value);
-      setSelectedDate(null); // Resetear la fecha al cambiar de mecánico
-      setSubmitError(null); // Limpiar cualquier error de selección de fecha
+      setSelectedDate(null); 
+      setSubmitError(null); 
     }
   }, [loadMechanicAvailability]);
 
@@ -94,40 +93,36 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
     setSubmitting(true);
     setSubmitError(null);
 
-    // Validación de campos obligatorios
     if (!formData.bike_id || !formData.mechanic_id || !selectedDate || !formData.type) {
       setSubmitError("Por favor, selecciona tu bicicleta, un mecánico, una fecha y el tipo de servicio.");
       setSubmitting(false);
       return;
     }
 
-    // Validar que la fecha seleccionada no sea pasada o no disponible
     const selectedDateMoment = moment(selectedDate);
-    const todayStartOfDay = moment().startOf('day'); // Usar startOf('day') para comparar solo el día
+    const todayStartOfDay = moment().startOf('day'); 
 
     const isPastDate = selectedDateMoment.isBefore(todayStartOfDay);
     const isUnavailable = unavailableDates.has(selectedDateMoment.format('YYYY-MM-DD'));
 
     if (isPastDate || isUnavailable) {
-      // Este error ya debería haberse establecido en onSelectSlot, pero es una doble verificación
       setSubmitError("La fecha seleccionada no es válida (es pasada o no disponible).");
       setSubmitting(false);
       return;
     }
 
-    // Calcular end_time (ej. 1 hora después de start_time)
     const startTime = moment(selectedDate).toISOString();
-    const endTime = moment(selectedDate).add(1, 'hour').toISOString(); // Asume una duración de 1 hora
+    const endTime = moment(selectedDate).add(1, 'hour').toISOString(); 
 
     const appointmentData = {
-      client_id: 1, // Deberías obtener el ID del cliente autenticado
+      client_id: 1, 
       mechanic_id: formData.mechanic_id,
       bike_id: formData.bike_id,
       type: formData.type,
       title: formData.title,
       description: formData.description,
       start_time: startTime,
-      end_time: endTime, // Añadido el campo end_time
+      end_time: endTime, 
       status: 'pendiente',
     };
 
@@ -137,10 +132,9 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
       onSubmitSuccess();
       setFormData(initialFormState);
       setSelectedDate(null);
-      setSubmitError(null); // Limpiar errores al éxito
+      setSubmitError(null); 
     } catch (error: any) {
       console.error("Error al crear la cita:", error);
-      // Mejor manejo de errores de validación del backend (código 422)
       if (error.response && error.response.status === 422 && error.response.data.errors) {
         const validationMessages = Object.values(error.response.data.errors).flat().join(', ');
         setSubmitError(`Error de validación: ${validationMessages}`);
@@ -201,7 +195,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
     return <div className="text-red-600 font-bold">{errorMechanics}</div>;
   }
 
-  const todayStartOfDay = moment().startOf('day'); // Consistente hoy al inicio del día
+  const todayStartOfDay = moment().startOf('day'); 
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-8">
@@ -217,31 +211,31 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
         {formData.mechanic_id && availabilityError && <p className="text-red-500 text-sm">{availabilityError}</p>}
 
         {formData.mechanic_id && (
-          <div className="mb-5 col-span-2"> {/* Ocupa ambas columnas */}
+          <div className="mb-5 col-span-2">
             <label className="block text-gray-800 text-md font-semibold mb-2">Selecciona una fecha disponible:</label>
             <div style={{ height: 300 }}>
               <Calendar
                 localizer={momentLocalizer(moment)}
-                date={selectedDate || new Date()} // Asegura que el calendario empiece en una fecha actual si no hay selección
+                date={selectedDate || new Date()} 
                 onNavigate={(newDate) => setSelectedDate(newDate)}
                 views={['month']}
                 selectable
                 onSelectSlot={(slotInfo) => {
                   const selectedMoment = moment(slotInfo.start);
-                  const isPastDate = selectedMoment.isBefore(todayStartOfDay, 'day'); // Comparar con el inicio del día
+                  const isPastDate = selectedMoment.isBefore(todayStartOfDay, 'day'); 
                   const isUnavailable = unavailableDates.has(selectedMoment.format('YYYY-MM-DD'));
                   
                   if (!isPastDate && !isUnavailable) {
                     setSelectedDate(slotInfo.start);
-                    setSubmitError(null); // Limpiar error al seleccionar una fecha válida
+                    setSubmitError(null); 
                   } else {
-                    setSelectedDate(null); // Deseleccionar si la fecha es inválida
-                    setSubmitError("Lo sentimos, esta fecha no está disponible. Por favor, elige otra."); // Mensaje específico
+                    setSelectedDate(null); 
+                    setSubmitError("Lo sentimos, esta fecha no está disponible. Por favor, elige otra."); 
                   }
                 }}
                 dayPropGetter={(date) => {
                   const dateMoment = moment(date);
-                  const isPastDate = dateMoment.isBefore(todayStartOfDay, 'day'); // Comparar con el inicio del día
+                  const isPastDate = dateMoment.isBefore(todayStartOfDay, 'day'); 
                   const isUnavailable = unavailableDates.has(dateMoment.format('YYYY-MM-DD'));
                   
                   const isDisabled = isPastDate || isUnavailable;
@@ -251,20 +245,19 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
                   let className = '';
 
                   if (isDisabled) {
-                    className = 'rbc-day-unavailable'; // Clase para días no disponibles
-                    style.cursor = 'not-allowed';      // Cursor de no permitido
-                    style.color = '#CC0000';           // Color de texto para días no disponibles
+                    className = 'rbc-day-unavailable'; 
+                    style.cursor = 'not-allowed';      
+                    style.color = '#CC0000';           
                   } else {
-                    style.cursor = 'pointer';          // Cursor de puntero para días seleccionables
+                    style.cursor = 'pointer';         
                   }
 
                   if (isSelected && !isDisabled) {
-                    style.backgroundColor = '#F62364'; // Tu color de marca rosa
-                    style.color = 'white';             // Texto blanco para el día seleccionado
+                    style.backgroundColor = '#F62364'; 
+                    style.color = 'white';             
                   }
                   
-                  // Aseguramos que la celda sea visible y tenga un z-index adecuado
-                  // Estos estilos son para la celda (div.rbc-date-cell)
+                  
                   style.position = 'relative'; 
                   style.zIndex = 1; 
 
@@ -279,13 +272,13 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ bikes, api, onSubmitS
                 })}
               />
             </div>
-            {/* Mostrar el mensaje de fecha seleccionada SOLO si selectedDate no es null */}
-            {selectedDate && !submitError && ( // Solo mostrar si selectedDate existe y no hay un error
+            
+            {selectedDate && !submitError && ( 
               <p className="text-sm text-gray-600 mt-2">Fecha seleccionada: {moment(selectedDate).format('YYYY-MM-DD')}</p>
             )}
-            {/* Mensaje de error específico o de "selecciona una fecha" */}
+            
             {submitError && <p className="text-sm text-red-500 mt-2">{submitError}</p>}
-            {!selectedDate && !submitError && formData.mechanic_id && ( // Si no hay fecha seleccionada Y no hay error (es el estado inicial)
+            {!selectedDate && !submitError && formData.mechanic_id && ( 
                 <p className="text-sm text-red-500 mt-2">Por favor, selecciona una fecha en el calendario.</p>
             )}
           </div>
