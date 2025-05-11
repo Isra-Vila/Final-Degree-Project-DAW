@@ -1,4 +1,4 @@
-<p align="center"><img src="https://primary.jwwb.nl/public/s/q/w/temp-exweteyvpwtdqulxkpii/tripasion-experience-high.png?enable-io=true&amp;enable=upscale&amp;width=972" width="400" alt="Tripasion Logo"></p>
+<p align="center"><img src="https://primary.jwwb.nl/public/s/q/w/temp-exweteyvpwtdqulxkpii/tripasion-experience-high.png?enable-io=true&amp;enable=upscale&amp;width=972" width="400" alt="Tripasion Experience" style="background-color: white;"></p>
 
 # Web Tripasión
 
