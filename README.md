@@ -60,9 +60,9 @@ La aplicación está diseñada para ser utilizada por tres tipos de usuarios, co
 
 Para una comprensión profunda de la arquitectura y el diseño del sistema, consulta los siguientes documentos:
 
-* [**Fase de Análisis**](docs/Fase_de_análisis_Web_Tripasion.pdf) 
-* [**Diagrama de Clases**](docs/Diagrama_de_clases_Web_Tripasion.png) 
-* [**Diagrama Entidad-Relación**](docs/Diagrama_Entidad_Relación_Web_Tripasion.drawio.png) 
+* [**Fase de Análisis**](Documentos/Fase_de_análisis_Web_Tripasion.pdf) 
+* [**Diagrama de Clases**](Documentos/Diagrama_de_clases_Web_Tripasion.png) 
+* [**Diagrama Entidad-Relación**](Documentos/Diagrama_Entidad_Relación_Web_Tripasion.drawio.png) 
 
 ---
 
