@@ -5,7 +5,7 @@ import { User } from '../../types/user';
 
 const ClientProfilePage: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(false); // No necesitamos cargar datos de la API aquí
+    const [loading, setLoading] = useState(false); 
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const ClientProfilePage: React.FC = () => {
         } else {
             setError("No se ha encontrado información del usuario. Por favor, inicia sesión nuevamente.");
         }
-        setLoading(false); // Establecemos loading a false aquí también
+        setLoading(false); 
     }, []);
 
     const containerVariants = {
@@ -103,7 +103,7 @@ const ClientProfilePage: React.FC = () => {
                                     <span className="font-semibold text-gray-600">Correo Electrónico:</span>
                                     <span className="text-gray-900">{user.email}</span>
                                 </div>
-                                 <div className="flex flex-col">
+                                <div className="flex flex-col">
                                     <span className="font-semibold text-gray-600">Rol:</span>
                                     <span className="text-gray-900">
                                         {user.roles && user.roles.length > 0
@@ -120,7 +120,7 @@ const ClientProfilePage: React.FC = () => {
                             variants={itemVariants}
                         >
                             <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
-                                 <svg className="w-8 h-8 mr-3 text-[#F62364]" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6zm0 4h18v2H3v-2zm0 4h18v2H3v-2zM1 18h22v2H1z" /></svg>
+                                <svg className="w-8 h-8 mr-3 text-[#F62364]" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6zm0 4h18v2H3v-2zm0 4h18v2H3v-2zM1 18h22v2H1z" /></svg>
                                 Historial de Compras
                             </h2>
                             <div className="text-center py-8">

@@ -27,25 +27,16 @@ class Appointment extends Model
         'end_time' => 'datetime',
     ];
 
-    /**
-     * Get the client that owns the appointment.
-     */
     public function client(): BelongsTo
     {
         return $this->belongsTo(User::class, 'client_id');
     }
 
-    /**
-     * Get the mechanic that is assigned to the appointment.
-     */
     public function mechanic(): BelongsTo
     {
         return $this->belongsTo(User::class, 'mechanic_id');
     }
 
-    /**
-     * Get the bike that the appointment is for.
-     */
     public function bike(): BelongsTo
     {
         return $this->belongsTo(Bike::class);

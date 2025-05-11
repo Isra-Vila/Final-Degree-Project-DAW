@@ -15,8 +15,8 @@ const BikeManagementPage: React.FC = () => {
     formError,
     handleCloseModal,
     handleFormChange,
-    handleCreate,
-    handleUpdate,
+    handleCreate, 
+    handleUpdate, 
     handleDelete,
     openCreateModal,
     openEditModal,
@@ -37,20 +37,6 @@ const BikeManagementPage: React.FC = () => {
     { header: 'Estado Reparación', render: (bike: Bike) => bike.repair_state || 'N/A' },
     { header: 'Estado Mantenimiento', render: (bike: Bike) => bike.maintenance_state || 'N/A' },
   ];
-
-  const handleCreateWrapper = useCallback(() => {
-    const form = document.querySelector('#createBikeForm');
-    if (form) {
-      (form as HTMLFormElement).dispatchEvent(new Event('submit'));
-    }
-  }, [handleCreate]);
-
-  const handleUpdateWrapper = useCallback(() => {
-    const form = document.querySelector('#editBikeForm');
-    if (form) {
-      (form as HTMLFormElement).dispatchEvent(new Event('submit'));
-    }
-  }, [handleUpdate, modal?.data?.id]);
 
   if (loading) {
     return <div>Cargando bicicletas...</div>;
@@ -122,9 +108,17 @@ const BikeManagementPage: React.FC = () => {
           modalType={modal.type}
           onConfirm={
             modal.type === 'create'
-              ? handleCreateWrapper
+              ? () => {
+                  
+                  const form = document.querySelector('#createBikeForm') as HTMLFormElement;
+                  if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                }
               : modal.type === 'edit'
-              ? handleUpdateWrapper
+              ? () => {
+                  
+                  const form = document.querySelector('#editBikeForm') as HTMLFormElement;
+                  if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                }
               : modal.type === 'delete'
               ? () => handleDelete(modal.data)
               : undefined
@@ -141,12 +135,26 @@ const BikeManagementPage: React.FC = () => {
         >
           {modal.type === 'create' && (
             <form id="createBikeForm" onSubmit={handleCreate}>
-              <BikeForm formData={formData} onFormChange={handleFormChange} isEditMode={false} formError={formError} />
+              <BikeForm
+                formData={formData}
+                onFormChange={handleFormChange}
+                isEditMode={false}
+                formError={formError}
+                onCreateBike={handleCreate} 
+                onCancel={handleCloseModal}
+              />
             </form>
           )}
           {modal.type === 'edit' && modal.data && (
             <form id="editBikeForm" onSubmit={(e) => handleUpdate(e, modal.data.id)}>
-              <BikeForm formData={formData} onFormChange={handleFormChange} isEditMode={true} formError={formError} />
+              <BikeForm
+                formData={formData}
+                onFormChange={handleFormChange}
+                isEditMode={true}
+                formError={formError}
+                onCreateBike={(e: FormEvent<HTMLFormElement>) => handleUpdate(e, modal.data.id)}
+                onCancel={handleCloseModal}
+              />
             </form>
           )}
           {modal.type === 'view' && modal.data && (

@@ -1,6 +1,5 @@
 import React from 'react';
-import { FormFieldProps } from '../../types/form'; // Importa la interfaz
-import FormField from '../common/FormField'; // Importa el componente
+import FormField from '../common/FormField'; 
 
 interface UserFormProps {
   formData: any;
@@ -13,7 +12,7 @@ const UserForm: React.FC<UserFormProps> = ({ formData, onFormChange, isEditMode,
   return (
     <div className="space-y-4">
       {formError && <p className="text-red-600 mb-4 whitespace-pre-wrap">{formError}</p>}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> {/* Diseño de grid de 1 columna en pantallas pequeñas y 2 en medianas y grandes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
         <FormField
           label="Nombre"
           name="name"
@@ -52,7 +51,7 @@ const UserForm: React.FC<UserFormProps> = ({ formData, onFormChange, isEditMode,
           <select
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             name="role"
-            value={formData.role || 'client'} // Establecer un valor por defecto si es necesario
+            value={formData.role || 'client'} 
             onChange={onFormChange}
           >
             <option value="client">Cliente</option>

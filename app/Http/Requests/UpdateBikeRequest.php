@@ -10,9 +10,7 @@ use Illuminate\Validation\Rule;
 
 class UpdateBikeRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    
     public function authorize(): bool
     {
         $user = Auth::user();
@@ -25,11 +23,7 @@ class UpdateBikeRequest extends FormRequest
         return $user && $user->hasRole('client') && $bike && $bike->owner_id === $user->id;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    
     public function rules(): array
     {
         $rules = [
@@ -58,8 +52,8 @@ class UpdateBikeRequest extends FormRequest
                     }
                 },
             ],
-            'repair_state' => 'sometimes', // ⭐ 'sometimes' para clientes al actualizar
-            'maintenance_state' => 'sometimes', // ⭐ 'sometimes' para clientes al actualizar
+            'repair_state' => 'sometimes', 
+            'maintenance_state' => 'sometimes', 
         ];
 
         if (!Auth::check() || !Auth::user()->hasRole('client')) {
@@ -74,7 +68,7 @@ class UpdateBikeRequest extends FormRequest
                     }
                 },
             ];
-            // Los administradores pueden actualizar el estado
+            //Los administradores pueden actualizar el estado
             $rules['repair_state'] = ['nullable', 'string', Rule::in(['reparada', 'en reparacion', 'no reparada'])];
             $rules['maintenance_state'] = ['nullable', 'string', Rule::in(['mantenimiento finalizado', 'en mantenimiento', 'mantenimiento no terminado'])];
         }

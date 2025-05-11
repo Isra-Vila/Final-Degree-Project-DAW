@@ -87,7 +87,7 @@ function RegisterPage({ setIsAuthenticated }: RegisterPageProps) {
               {generalError}
             </motion.p>
           )}
-          <form onSubmit={handleRegister} className="space-y-6" noValidate> {/* <-- ¡AÑADIDO AQUÍ! */}
+          <form onSubmit={handleRegister} className="space-y-6" noValidate> 
             <FormField
               label="Nombre Completo"
               type="text"

@@ -17,7 +17,6 @@ function LoginPage({ setIsAuthenticated, setUserRole }: LoginPageProps) {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Fondo de imagen
   const backgroundImage = "/images/fondo_login_ciclismo.jpg";
 
   useEffect(() => {
@@ -33,13 +32,12 @@ function LoginPage({ setIsAuthenticated, setUserRole }: LoginPageProps) {
           const roleName = user.roles[0].name;
           setUserRole(roleName);
 
-          // Redirección basada en rol
           if (roleName === "admin") {
             navigate("/admin/users");
           } else if (roleName === "client") {
             navigate(`/client/${user.id}`);
           } else if (roleName === "mechanic") {
-            navigate(`/mechanic/${user.id}`); // Redirige al perfil del mecánico con su ID
+            navigate(`/mechanic/${user.id}`); 
           } else {
             navigate("/");
           }
@@ -74,14 +72,13 @@ function LoginPage({ setIsAuthenticated, setUserRole }: LoginPageProps) {
       if (user && user.roles && user.roles.length > 0) {
         const roleName = user.roles[0].name;
         setUserRole(roleName);
-
-        // Redirección basada en rol
+        
         if (roleName === "admin") {
           navigate("/admin/users");
         } else if (roleName === "client") {
           navigate(`/client/${user.id}`);
         } else if (roleName === "mechanic") {
-          navigate(`/mechanic/${user.id}`); // Redirige al perfil del mecánico con su ID
+          navigate(`/mechanic/${user.id}`); 
         } else {
           navigate("/");
         }

@@ -3,7 +3,7 @@ import ComingSoon from '../../components/common/ComingSoon';
 
 const DateManagementPage: React.FC = () => {
   return (
-    <ComingSoon /> // Simplemente renderiza el componente ComingSoon
+    <ComingSoon /> 
   );
 };
 

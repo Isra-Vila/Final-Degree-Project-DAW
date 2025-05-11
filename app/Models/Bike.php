@@ -13,7 +13,7 @@ class Bike extends Model
 
     protected $fillable = [
         'owner_id',
-        'mechanic_id', // Asegúrate de que esta columna exista si la usas para el "mecánico por defecto"
+        'mechanic_id', 
         'brand',
         'model',
         'handlebar',
@@ -33,28 +33,19 @@ class Bike extends Model
     ];
 
     protected $casts = [
-        // Define casts si tienes, por ejemplo, campos de fecha
+        
     ];
 
-    /**
-     * Get the owner that owns the bike.
-     */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    /**
-     * Get the mechanic that the bike is assigned to (if applicable).
-     */
     public function mechanic(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'mechanic_id'); // Asume que mechanic_id apunta a un usuario con rol 'mechanic'
+        return $this->belongsTo(User::class, 'mechanic_id'); 
     }
 
-    /**
-     * Get the appointments for the bike.
-     */
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);

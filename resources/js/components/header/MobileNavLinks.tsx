@@ -77,15 +77,6 @@ const MobileNavLinks: React.FC<MobileNavLinksProps> = ({ isLoggedIn, userRole, h
               <NavLink to="/admin/bikes" onClick={closeMenu} className={linkClasses}>
                 Gestión de Bicicletas
               </NavLink>
-              <NavLink to="/admin/stock" onClick={closeMenu} className={linkClasses}>
-                Gestión de Stock
-              </NavLink>
-              <NavLink to="/admin/schedule" onClick={closeMenu} className={linkClasses}>
-                Gestión de Horarios
-              </NavLink>
-              <NavLink to="/admin/documents" onClick={closeMenu} className={linkClasses}>
-                Gestión de Documentos
-              </NavLink>
             </>
           )}
           <button onClick={() => { handleLogout(); closeMenu(); }} className={`${linkClasses({ isActive: false })} w-full text-left`}>

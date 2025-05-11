@@ -47,7 +47,7 @@ class ServicioTest extends TestCase
             'bicicleta_id' => $this->bicicleta->id,
             'cliente_id' => $this->cliente->id,
             'tipo' => 'reparacion',
-            'estado' => 'pendiente', // Estado por defecto al crear
+            'estado' => 'pendiente', 
         ]);
     }
 
@@ -63,7 +63,7 @@ class ServicioTest extends TestCase
             'tipo' => 'mantenimiento',
             'estado' => 'en_proceso'
         ]);
-        // Crear un servicio de otro cliente para asegurar que no se muestre
+        
         Servicio::factory()->create([
             'bicicleta_id' => Bicicleta::factory()->create(['user_id' => User::factory()->create(['role' => 'cliente'])->id])->id,
             'cliente_id' => User::factory()->create(['role' => 'cliente'])->id,
@@ -74,9 +74,9 @@ class ServicioTest extends TestCase
         $response = $this->actingAs($this->cliente)->getJson('/api/servicios');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(1) // Solo el servicio del cliente logueado
+                 ->assertJsonCount(1) 
                  ->assertJsonFragment(['id' => $service1->id, 'estado' => 'en_proceso'])
-                 ->assertJsonMissing(['estado' => 'completado']); // El servicio del otro cliente no debe estar
+                 ->assertJsonMissing(['estado' => 'completado']);
     }
 
     /**
@@ -88,7 +88,7 @@ class ServicioTest extends TestCase
         $service = Servicio::factory()->create([
             'bicicleta_id' => $this->bicicleta->id,
             'cliente_id' => $this->cliente->id,
-            'mecanico_id' => $this->mecanico->id, // Asignar al mecánico
+            'mecanico_id' => $this->mecanico->id,
             'estado' => 'pendiente',
         ]);
 
@@ -115,7 +115,7 @@ class ServicioTest extends TestCase
         $service = Servicio::factory()->create([
             'bicicleta_id' => $this->bicicleta->id,
             'cliente_id' => $this->cliente->id,
-            'mecanico_id' => $otherMecanico->id, // Asignado a otro mecánico
+            'mecanico_id' => $otherMecanico->id, 
             'estado' => 'pendiente',
         ]);
 
@@ -123,8 +123,8 @@ class ServicioTest extends TestCase
             'estado' => 'en_proceso',
         ]);
 
-        $response->assertStatus(403); // HTTP 403 Forbidden (o 404 Not Found si no se permite ver recursos ajenos)
-        $this->assertDatabaseHas('servicios', ['id' => $service->id, 'estado' => 'pendiente']); // Estado no debe cambiar
+        $response->assertStatus(403); 
+        $this->assertDatabaseHas('servicios', ['id' => $service->id, 'estado' => 'pendiente']); 
     }
 
     /**
@@ -160,7 +160,7 @@ class ServicioTest extends TestCase
     {
         $service = Servicio::factory()->create();
         $response = $this->getJson('/api/servicios');
-        $response->assertStatus(401); // HTTP 401 Unauthorized
+        $response->assertStatus(401); 
         $response = $this->postJson('/api/servicios', ['tipo' => 'reparacion']);
         $response->assertStatus(401);
     }

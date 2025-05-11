@@ -10,9 +10,7 @@ use App\Models\User;
 
 class UpdateAppointmentRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    
     public function authorize(): bool
     {
         $user = Auth::user();
@@ -22,12 +20,12 @@ class UpdateAppointmentRequest extends FormRequest
             return true;
         }
 
-        // A client can only update their own appointments (e.g., to cancel)
+        
         if ($user->hasRole('client')) {
             return $appointment && $appointment->client_id === $user->id;
         }
 
-        // A mechanic can only update their assigned appointments
+        
         if ($user->hasRole('mechanic')) {
             return $appointment && $appointment->mechanic_id === $user->id;
         }
@@ -35,11 +33,7 @@ class UpdateAppointmentRequest extends FormRequest
         return false;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    
     public function rules(): array
     {
         $appointment = $this->route('appointment');
@@ -51,14 +45,13 @@ class UpdateAppointmentRequest extends FormRequest
             'start_time' => 'nullable|date',
             'end_time' => 'nullable|date|after:start_time',
             'type' => ['nullable', Rule::in(['reparacion', 'mantenimiento'])],
-            // La regla general de status debe permitir todos los estados posibles si no hay reglas específicas que la anulen
             'status' => [
                 'nullable',
-                Rule::in(['pending', 'confirmed', 'completed', 'canceled', 'failed']), // ⭐ AÑADIDO 'failed' AQUÍ
+                Rule::in(['pending', 'confirmed', 'completed', 'canceled', 'failed']), 
             ],
         ];
 
-        // Reglas específicas para clientes
+        //Reglas específicas para clientes
         if ($user->hasRole('client')) {
             $rules['mechanic_id'] = 'sometimes';
             $rules['client_id'] = 'sometimes';
@@ -79,22 +72,22 @@ class UpdateAppointmentRequest extends FormRequest
             ];
             $rules['status'] = [
                 'sometimes',
-                // Solo permitir 'canceled' para clientes y con validación de estado
+                
                 Rule::when(in_array($this->input('status'), ['canceled']), [
                     Rule::in(['canceled']),
                     function ($attribute, $value, $fail) use ($appointment) {
-                        // Un cliente solo puede cancelar citas 'pending' o 'confirmed'.
+                        
                         if ($appointment && !in_array($appointment->status, ['pending', 'confirmed'])) {
                             $fail("No puedes cancelar una cita que ya está " . $appointment->status . ".");
                         }
                     }
                 ]),
-                // Si el cliente intenta cambiar a cualquier otro estado que no sea 'canceled', no se permite
+                //Si el cliente intenta cambiar a cualquier otro estado que no sea 'canceled', no se permite
                 Rule::when(!in_array($this->input('status'), ['canceled']), ['prohibits']),
             ];
         }
 
-        // Reglas específicas para mecánicos
+        //Reglas específicas para mecánicos
         if ($user->hasRole('mechanic')) {
             $rules['mechanic_id'] = 'sometimes';
             $rules['client_id'] = 'sometimes';
@@ -106,26 +99,25 @@ class UpdateAppointmentRequest extends FormRequest
             $rules['end_time'] = 'sometimes';
             $rules['status'] = [
                 'nullable',
-                // ⭐ Permitir 'pending', 'confirmed', 'completed', 'canceled', 'failed' para mecánicos
-                // La lógica de validación personalizada manejará las transiciones de estado.
+                
                 Rule::in(['pending', 'confirmed', 'completed', 'canceled', 'failed']),
                 function ($attribute, $value, $fail) use ($appointment) {
-                    // Lógica de transición de estados para el mecánico
+                    //Lógica de transición de estados para el mecánico
                     if ($value === 'confirmed' && $appointment->status !== 'pending') {
                         $fail("Solo puedes confirmar citas que están pendientes.");
                     }
                     if ($value === 'completed' && $appointment->status !== 'confirmed') {
                         $fail("Solo puedes marcar como completadas las citas que están confirmadas.");
                     }
-                    // El mecánico puede "fallar" un servicio solo si está 'confirmed'
+                    //El mecánico puede "fallar" un servicio solo si está 'confirmed'
                     if ($value === 'failed' && $appointment->status !== 'confirmed') {
                         $fail("Solo puedes marcar como 'no completado' un servicio que está confirmado.");
                     }
-                    // El mecánico puede cancelar una cita si está 'pending' o 'confirmed'
+                    //El mecánico puede cancelar una cita si está 'pending' o 'confirmed'
                     if ($value === 'canceled' && !in_array($appointment->status, ['pending', 'confirmed'])) {
-                         $fail("Solo puedes cancelar citas que están pendientes o confirmadas.");
+                        $fail("Solo puedes cancelar citas que están pendientes o confirmadas.");
                     }
-                    // Si el mecánico intenta cambiar a 'pending' desde un estado posterior, no se permite
+                    //Si el mecánico intenta cambiar a 'pending' desde un estado posterior, no se permite
                     if ($value === 'pending' && in_array($appointment->status, ['confirmed', 'completed', 'canceled', 'failed'])) {
                         $fail("No puedes regresar una cita a estado 'pendiente' una vez que ha avanzado.");
                     }
@@ -133,7 +125,7 @@ class UpdateAppointmentRequest extends FormRequest
             ];
         }
 
-        // Reglas específicas para administradores
+        //Reglas específicas para administradores
         if ($user->hasRole('admin')) {
             $rules['mechanic_id'] = [
                 'nullable',
@@ -153,10 +145,10 @@ class UpdateAppointmentRequest extends FormRequest
             $rules['end_time'] = 'nullable|date|after:start_time';
             $rules['status'] = [
                 'nullable',
-                Rule::in(['pending', 'confirmed', 'completed', 'canceled', 'failed']), // ⭐ AÑADIDO 'failed' AQUÍ para admin también
+                Rule::in(['pending', 'confirmed', 'completed', 'canceled', 'failed']), 
             ];
 
-            // Validación de disponibilidad del mecánico al actualizar (para admins, solo si mechanic_id o tiempos cambian)
+            //Validación de disponibilidad del mecánico al actualizar (para admins, solo si mechanic_id o tiempos cambian)
             if ($this->hasAny(['mechanic_id', 'start_time', 'end_time'])) {
                 $rules['start_time'][] = function ($attribute, $value, $fail) use ($appointment) {
                     $mechanicId = $this->input('mechanic_id', $appointment->mechanic_id);

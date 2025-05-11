@@ -78,15 +78,14 @@ body {
 }
 
 
-/* =================================================== */
+/* ==================================================== */
 /* REGLAS CRÍTICAS PARA REACT-BIG-CALENDAR (¡NO TOCAR!) */
-/* =================================================== */
+/* ==================================================== */
 
 /* Clase para los días no disponibles (pasados o con cita) */
 .rbc-day-unavailable {
     background-color: #FFDDDD !important; /* Un rosa claro más fuerte para el fondo */
     opacity: 0.8 !important;             /* Un poco menos de opacidad para destacar */
-    /* NOTA: pointer-events: none para días no disponibles se maneja en dayPropGetter */
 }
 
 /* Asegurar que la celda de día y su fondo permitan el clic */
@@ -95,7 +94,7 @@ body {
     pointer-events: auto !important; /* Asegura que la celda reciba eventos de ratón */
     cursor: pointer !important;      /* Cambia el cursor a puntero para indicar que es clicable */
     position: relative !important;   /* Esencial para que z-index funcione y no haya superposiciones */
-    z-index: 2 !important;           /* Ponlo por encima de rbc-day-bg y otros elementos */
+    z-index: 2 !important;           
 }
 
 /* rbc-day-bg es el div de fondo que puede bloquear el clic */
@@ -105,41 +104,38 @@ body {
 }
 
 /* rbc-day-number es el elemento que contiene el número del día. */
-/* Queremos que sea lo más grande y clicable posible. */
 .rbc-day-number {
-    /* Estas propiedades intentan expandir el área clicable del número */
-    /* Si el clic ya funciona en la celda, esto es más estético */
-    font-size: 1.5em !important;       /* Haz el número más grande */
-    font-weight: bold !important;      /* Negrita para que destaque */
-    display: flex !important;          /* Usa flexbox para centrar el contenido */
-    align-items: center !important;    /* Centra verticalmente */
-    justify-content: center !important;/* Centra horizontalmente */
-    width: 100% !important;            /* Expande el ancho del número */
-    height: 100% !important;           /* Expande la altura del número */
-    position: relative !important;     /* Importante para el z-index */
-    z-index: 3 !important;             /* Pon el número por encima de todo */
+    
+    font-size: 1.5em !important;       
+    font-weight: bold !important;      
+    display: flex !important;          
+    align-items: center !important;    
+    justify-content: center !important;
+    width: 100% !important;            
+    height: 100% !important;           
+    position: relative !important;    
+    z-index: 3 !important;             
 }
 
-/* Oculta los eventos en el calendario */
+
 .rbc-event-hidden {
     display: none !important;
 }
 
 /* Ajustes para el rango de días del mes fuera de vista */
 .rbc-off-range-bg {
-    background: #f8f8f8 !important; /* Un color de fondo muy claro para los días de otros meses */
+    background: #f8f8f8 !important; 
 }
 
 .rbc-off-range {
     color: #a0a0a0 !important; /* Color de texto más tenue para días fuera de rango */
 }
 
-/* Asegurar que el contenedor del calendario no tenga overflow oculto si causa problemas */
 .rbc-calendar {
     overflow: visible !important;
 }
 
-/* Asegurar que la tabla de días no tenga overflow oculto si causa problemas */
+/* Asegurar que la tabla de días no tenga overflow oculto si da problemas */
 .rbc-month-view .rbc-row-bg {
     overflow: visible !important;
 }
@@ -147,9 +143,9 @@ body {
     overflow: visible !important;
 }
 
-/* =================================================== */
+/* =============================================================== */
 /* ESTILOS PARA EVENTOS DE REACT-BIG-CALENDAR (MECÁNICO Y CLIENTE) */
-/* =================================================== */
+/* =============================================================== */
 
 /* Estilos base para eventos */
 .rbc-event-custom {
@@ -158,31 +154,29 @@ body {
   text-align: center;
   cursor: pointer;
   font-weight: bold;
-  color: white; /* Texto blanco para todas las citas */
-  font-size: 0.8em; /* Ajustar el tamaño de la fuente para que quepa mejor */
-  white-space: nowrap; /* Evitar que el texto se envuelva */
-  overflow: hidden; /* Ocultar el texto si excede el ancho */
-  text-overflow: ellipsis; /* Mostrar puntos suspensivos si el texto es demasiado largo */
+  color: white; 
+  font-size: 0.8em; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
-/* Estilo para citas pendientes (azul por defecto de react-big-calendar, pero puedes personalizarlo) */
+
 .rbc-event-pending {
-  background-color: #3174ad; /* Azul de react-big-calendar */
-  /* Puedes personalizarlo, por ejemplo: */
-  /* background-color: #4A90E2; */
+  background-color: #3174ad; 
 }
 
 /* Estilo para citas confirmadas (verde) */
 .rbc-event-confirmed {
-  background-color: #4CAF50; /* Verde */
+  background-color: #4CAF50; 
 }
 
 /* Estilo para citas completadas (gris oscuro) */
 .rbc-event-completed {
-  background-color: #757575; /* Gris oscuro */
+  background-color: #757575; 
 }
 
 /* Estilo para citas fallidas (rojo oscuro) */
 .rbc-event-failed {
-  background-color: #D32F2F; /* Rojo oscuro */
+  background-color: #D32F2F; 
 }

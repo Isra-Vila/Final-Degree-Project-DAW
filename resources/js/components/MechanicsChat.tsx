@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 interface MechanicsChatProps {
-  // Puedes definir props si necesitas pasar datos específicos al chat
+  
 }
 
 const MechanicsChat: React.FC<MechanicsChatProps> = memo(() => {
@@ -12,7 +12,7 @@ const MechanicsChat: React.FC<MechanicsChatProps> = memo(() => {
 
   const handleOpenChat = useCallback((mechanicId: number) => {
     console.log(`Abrir chat con el mecánico ${mechanicId}`);
-    // ** Aquí implementarías la lógica para abrir el chat **
+    //  Aquí se implementaría la lógica para el chat 
   }, []);
 
   return (

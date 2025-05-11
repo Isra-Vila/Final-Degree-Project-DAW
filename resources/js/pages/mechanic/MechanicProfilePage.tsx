@@ -93,7 +93,6 @@ const MechanicProfilePage: React.FC<MechanicProfilePageProps> = ({ user }) => {
             </div>
           </motion.div>
 
-          {/* Sección de Documentos (Coming Soon) */}
           <motion.div
             className="bg-white p-8 rounded-xl shadow-lg mb-10 border-b-4 border-[#F62364] transform transition-transform duration-300 hover:scale-[1.01]"
             variants={itemVariants}
@@ -113,7 +112,6 @@ const MechanicProfilePage: React.FC<MechanicProfilePageProps> = ({ user }) => {
             <ComingSoon />
           </motion.div>
 
-          {/* Sección de Horario (Coming Soon) */}
           <motion.div
             className="bg-white p-8 rounded-xl shadow-lg border-b-4 border-[#F62364] transform transition-transform duration-300 hover:scale-[1.01]"
             variants={itemVariants}

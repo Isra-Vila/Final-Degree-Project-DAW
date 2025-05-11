@@ -7,18 +7,10 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * The path to the "home" route for your application.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
-     */
-    public const HOME = '/home'; // Puedes ajustar esto si tu ruta de inicio es diferente
+    
+    public const HOME = '/home'; 
 
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     */
+    
     public function boot(): void
     {
         $this->configureRateLimiting();
@@ -33,11 +25,9 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Configure the application's rate limiters.
-     */
+    
     protected function configureRateLimiting(): void
     {
-        // Puedes añadir lógica de límite de tasa aquí si es necesario
+       
     }
 }

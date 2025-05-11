@@ -37,7 +37,7 @@ class BicicletaServiceTest extends TestCase
             'descripcion_problema' => 'Ruido en los frenos delanteros',
         ]);
 
-        $response->assertStatus(201) // HTTP 201 Created
+        $response->assertStatus(201) 
                  ->assertJsonStructure(['id', 'marca', 'modelo', 'numero_serie', 'user_id']);
 
         $this->assertDatabaseHas('bicicletas', [
@@ -55,12 +55,12 @@ class BicicletaServiceTest extends TestCase
         $this->actingAs($this->cliente);
         Bicicleta::factory()->create(['user_id' => $this->cliente->id, 'marca' => 'MiBici1']);
         Bicicleta::factory()->create(['user_id' => $this->cliente->id, 'marca' => 'MiBici2']);
-        Bicicleta::factory()->create(['user_id' => User::factory()->create(['role' => 'cliente'])->id, 'marca' => 'OtraBici']); // Otra bici de otro cliente
+        Bicicleta::factory()->create(['user_id' => User::factory()->create(['role' => 'cliente'])->id, 'marca' => 'OtraBici']);
 
         $response = $this->getJson('/api/bicicletas');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(2) // Esperamos solo 2 bicicletas, las del cliente logueado
+                 ->assertJsonCount(2) 
                  ->assertJsonFragment(['marca' => 'MiBici1'])
                  ->assertJsonFragment(['marca' => 'MiBici2'])
                  ->assertJsonMissing(['marca' => 'OtraBici']);
@@ -78,7 +78,7 @@ class BicicletaServiceTest extends TestCase
         $response = $this->actingAs($this->admin)->getJson('/api/bicicletas');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(5); // Esperamos todas las 5 bicicletas
+                 ->assertJsonCount(5); 
     }
 
     /**
@@ -94,6 +94,6 @@ class BicicletaServiceTest extends TestCase
             'descripcion_problema' => 'Necesita ajuste de cambios',
         ]);
 
-        $response->assertStatus(401); // HTTP 401 Unauthorized
+        $response->assertStatus(401); 
     }
 }

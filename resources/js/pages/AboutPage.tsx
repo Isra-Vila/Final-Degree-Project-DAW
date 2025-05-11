@@ -1,17 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom'; // Asumiendo que usas React Router
+import { Link } from 'react-router-dom'; 
 
 const AboutPage: React.FC = () => {
   
-  const valuesImage = "/images/fondo_principal.gif"; // Imagen de un taller o alguien trabajando con bicis
+  const valuesImage = "/images/fondo_principal.gif"; 
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3, // Retraso entre la animación de los hijos
+        staggerChildren: 0.3, 
       },
     },
   };
@@ -28,7 +28,7 @@ const AboutPage: React.FC = () => {
       initial="hidden"
       animate="visible"
     >
-      {/* Sección Héroe: Imagen de fondo y título impactante */}
+      
       <div
         className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] flex items-center justify-center bg-cover bg-center bg-no-repeat"
         
@@ -44,7 +44,6 @@ const AboutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Sección de Introducción/Filosofía */}
       <div className="max-w-5xl mx-auto py-16 px-6">
         <motion.p
           className="text-xl md:text-2xl leading-relaxed font-medium text-center mb-10"
@@ -60,7 +59,6 @@ const AboutPage: React.FC = () => {
         </motion.p>
       </div>
 
-      {/* Sección de Valores/Cómo lo hacemos (con imagen lateral) */}
       <div className="bg-gray-50 py-16 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <motion.div className="md:w-1/2" variants={itemVariants}>
@@ -95,7 +93,6 @@ const AboutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Sección de Llamada a la Acción */}
       <div className="bg-[#F62364] py-16 px-6 text-white text-center">
         <motion.div className="max-w-4xl mx-auto" variants={containerVariants}>
           <motion.h3 className="text-3xl md:text-4xl font-bold mb-6" variants={itemVariants}>

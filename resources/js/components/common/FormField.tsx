@@ -11,7 +11,7 @@ const FormField: React.FC<FormFieldProps> = ({ label, type = 'text', name, value
         type={type}
         id={name}
         className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-          error ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-[#F62364] focus:ring-[#F62364]' // <-- Revertido a tus colores si los habías cambiado
+          error ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-[#F62364] focus:ring-[#F62364]' 
         } sm:text-sm text-gray-900`}
         name={name}
         value={value}
