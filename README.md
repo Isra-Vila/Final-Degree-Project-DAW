@@ -1,8 +1,8 @@
 <p align="center"><img src="https://primary.jwwb.nl/public/s/q/w/temp-exweteyvpwtdqulxkpii/tripasion-experience-high.png?enable-io=true&enable=upscale&width=972" width="400" alt="Tripasion Experience"></p>
 
 <div align="center">
-  <h1>🚴‍♂️ Web Tripasión</h1>
-  <p>Plataforma integral para la tienda de ciclismo "Tripasión", modernizando la gestión del taller y sentando las bases para una futura tienda online.</p>
+  <h1>🚴‍♂️ Tripasion</h1>
+  <p>Plataforma integral para la tienda de ciclismo "Tripasion", modernizando la gestión del taller y sentando las bases para una futura tienda online.</p>
 
   <div>
     <img src="https://img.shields.io/badge/PHP-8.1%2B-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
@@ -20,9 +20,9 @@
 
 ---
 
-## ❓ ¿Qué es Web Tripasión?
+## ❓ ¿Qué es Tripasion?
 
-**Web Tripasión** es una aplicación web diseñada para ser la columna vertebral digital de la tienda de ciclismo Tripasión. Su objetivo principal en esta primera versión es **modernizar y optimizar la gestión del taller de bicicletas**, ofreciendo una experiencia transparente y eficiente tanto para los clientes como para los mecánicos.
+**Tripasion** es una aplicación web diseñada para ser la columna vertebral digital de la tienda de ciclismo Tripasion. Su objetivo principal en esta primera versión es **modernizar y optimizar la gestión del taller de bicicletas**, ofreciendo una experiencia transparente y eficiente tanto para los clientes como para los mecánicos.
 
 El sistema busca eliminar la dependencia del papel, centralizar la información de servicios y bicicletas, y sentar las bases tecnológicas para futuras expansiones, incluyendo una completa tienda online de productos de ciclismo.
 
